@@ -41,7 +41,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
   res.setHeader(
     'Set-Cookie',
-    `casette_admin_session=${sessionToken}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=86400`,
+    `midnight_candle_admin_session=${sessionToken}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=86400`,
   );
 
   return res.status(200).json({

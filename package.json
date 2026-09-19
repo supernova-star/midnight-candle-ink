@@ -22,8 +22,7 @@
     "react-dom": "^18.2.0",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^6.30.6",
-    "styled-components": "^5.3.10",
-    "vite-plugin-pwa": "^0.17.4"
+    "styled-components": "^5.3.10"
   },
   "devDependencies": {
     "@mui/system": "^5.17.0",

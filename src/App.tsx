@@ -1,16 +1,33 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { DesktopHome } from './pages/DesktopHome/DesktopHome';
 import { Admin } from './pages/Admin/Admin';
 import { AdminLogin } from './pages/Admin/AdminLogin';
 import { AdminRoute } from './pages/Admin/AdminRoute';
+import { AdminError } from './pages/Admin/AdminError';
 import { NotFound } from './pages/NotFound/NotFound';
 import { About } from './pages/About/About';
 import { Stories } from './pages/Stories/Stories';
 import { StoryDetail } from './pages/StoryDetail/StoryDetail';
 import { Reader } from './pages/Reader/Reader';
+import { recordVisitorActivity } from './utils/visitorTracking';
 
 export const App: React.FC = () => {
+  useEffect(() => {
+    if (window.location.pathname.startsWith('/adminsupa')) {
+      return;
+    }
+
+    void recordVisitorActivity();
+
+    const activityInterval = window.setInterval(() => {
+      void recordVisitorActivity();
+    }, 60 * 1000);
+
+    return () => window.clearInterval(activityInterval);
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -24,10 +41,11 @@ export const App: React.FC = () => {
         <Route path="/stories/:storyId" element={<StoryDetail />} />
         <Route path="/about" element={<About />} />
 
-        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/adminsupa" element={<AdminLogin />} />
+        <Route path="/adminsupa/error" element={<AdminError />} />
 
         <Route
-          path="/admin"
+          path="/adminsupa/dashboard"
           element={
             <AdminRoute>
               <Admin />
