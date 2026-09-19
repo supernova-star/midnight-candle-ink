@@ -17,6 +17,8 @@ const getBrowserId = (): string => {
 };
 
 export const recordVisitorActivity = async (): Promise<void> => {
+  if (!supabase) return;
+
   const browserId = getBrowserId();
 
   const { error } = await supabase.rpc('register_browser', {
@@ -29,6 +31,8 @@ export const recordVisitorActivity = async (): Promise<void> => {
 };
 
 export const updateVisitorActivity = async (): Promise<void> => {
+  if (!supabase) return;
+
   const browserId = getBrowserId();
 
   const { error } = await supabase.rpc('heartbeat_browser', {

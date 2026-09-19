@@ -11,7 +11,6 @@ import { About } from './pages/About/About';
 import { Stories } from './pages/Stories/Stories';
 import { StoryDetail } from './pages/StoryDetail/StoryDetail';
 import { Reader } from './pages/Reader/Reader';
-import { recordVisitorActivity } from './utils/visitorTracking';
 
 export const App: React.FC = () => {
   useEffect(() => {
@@ -19,13 +18,29 @@ export const App: React.FC = () => {
       return;
     }
 
-    void recordVisitorActivity();
+    let isDisposed = false;
+    let activityInterval: number | undefined;
 
-    const activityInterval = window.setInterval(() => {
+    const startVisitorTracking = async () => {
+      const { recordVisitorActivity } = await import('./utils/visitorTracking');
+
+      if (isDisposed) return;
+
       void recordVisitorActivity();
-    }, 60 * 1000);
+      activityInterval = window.setInterval(() => {
+        void recordVisitorActivity();
+      }, 60 * 1000);
+    };
 
-    return () => window.clearInterval(activityInterval);
+    void startVisitorTracking();
+
+    return () => {
+      isDisposed = true;
+
+      if (activityInterval !== undefined) {
+        window.clearInterval(activityInterval);
+      }
+    };
   }, []);
 
   return (
