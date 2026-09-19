@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AlertTriangle, RefreshCw, Trash2 } from 'lucide-react';
-import {
-  deleteUser,
-  getUsers,
-  User,
-  UsersResponse,
-} from '@/hooks/activeUsers';
+import { deleteUser, getUsers, User, UsersResponse } from '@/hooks/activeUsers';
 import { Typography } from '@/components/uiComponents/typography/Typography';
 import { Button } from '@/components/uiComponents/button/Button';
 import { Modal } from '@/components/uiComponents/modal/Modal';
@@ -31,8 +26,9 @@ export const ActiveUsersList: React.FC = () => {
   const [deletingBrowserId, setDeletingBrowserId] = useState<string | null>(
     null,
   );
-  const [userPendingDeletion, setUserPendingDeletion] =
-    useState<User | null>(null);
+  const [userPendingDeletion, setUserPendingDeletion] = useState<User | null>(
+    null,
+  );
   const [errorMessage, setErrorMessage] = useState('');
 
   const loadUsers = async () => {

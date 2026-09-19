@@ -14,18 +14,17 @@ type ChapterCardProps = {
   chapter: ChapterMetadata;
   chapterNumber: number;
   storyId: string;
+  isAvailable?: boolean;
 };
 
 export const ChapterCard: React.FC<ChapterCardProps> = ({
   chapter,
   chapterNumber,
   storyId,
-}) => (
-  <ChapterCardLink
-    to={`/stories/${storyId}/chapters/${chapter.id}`}
-    aria-label={`Read chapter ${chapterNumber}: ${chapter.title}`}
-  >
-    <ChapterCardContainer element="article">
+  isAvailable = true,
+}) => {
+  const content = (
+    <ChapterCardContainer element="article" $isAvailable={isAvailable}>
       <ColumnFlexContainer gap={[1.5]}>
         <ChapterNumber>Chapter {chapterNumber}</ChapterNumber>
         <Typography variant="h6" weight="semiBold" color="var(--text-primary)">
@@ -34,10 +33,21 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
       </ColumnFlexContainer>
       <ChapterMeta>
         <Typography variant="caption" color="var(--text-secondary)">
-          {chapter.readTime} read
+          {isAvailable ? `${chapter.readTime} read` : 'Coming soon'}
         </Typography>
-        <ChevronRight aria-hidden="true" />
+        {isAvailable && <ChevronRight aria-hidden="true" />}
       </ChapterMeta>
     </ChapterCardContainer>
-  </ChapterCardLink>
-);
+  );
+
+  if (!isAvailable) return content;
+
+  return (
+    <ChapterCardLink
+      to={`/stories/${storyId}/chapters/${chapter.id}`}
+      aria-label={`Read chapter ${chapterNumber}: ${chapter.title}`}
+    >
+      {content}
+    </ChapterCardLink>
+  );
+};

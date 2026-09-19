@@ -121,16 +121,16 @@ export const StoryDetail: React.FC = () => {
           flex={1}
           minHeight="0px"
           gap={[3]}
-          margin={[8, 0, 0]}
+          margin={[3, 0, 0]}
           overflow="hidden"
           aria-labelledby="chapters-heading"
         >
           <Typography
             id="chapters-heading"
             component="h2"
-            variant="h5"
-            weight="semiBold"
-            color="var(--text-primary)"
+            variant="subtitle2"
+            color="var(--accent)"
+            textStyle="uppercase"
           >
             Chapters
           </Typography>
@@ -141,6 +141,7 @@ export const StoryDetail: React.FC = () => {
                 chapter={chapter}
                 chapterNumber={index + 1}
                 storyId={story.id}
+                isAvailable={index === 0}
               />
             ))}
           </ChaptersList>

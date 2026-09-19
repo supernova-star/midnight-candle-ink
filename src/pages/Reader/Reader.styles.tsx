@@ -48,6 +48,15 @@ export const ReadingBody = styled.article`
     line-height: 1.9;
   }
 
+  .scene-break {
+    margin: ${({ theme }) => theme.spacing(7, 0)};
+    color: var(--accent);
+    font-size: 1.25rem;
+    letter-spacing: ${({ theme }) => theme.spacing(1)};
+    line-height: 1;
+    text-align: center;
+  }
+
   h2,
   h3 {
     margin: ${({ theme }) => theme.spacing(8, 0, 3)};

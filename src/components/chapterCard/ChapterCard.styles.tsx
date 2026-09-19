@@ -14,7 +14,9 @@ export const ChapterCardLink = styled(Link)`
   }
 `;
 
-export const ChapterCardContainer = styled(RowFlexContainer)`
+export const ChapterCardContainer = styled(RowFlexContainer)<{
+  $isAvailable: boolean;
+}>`
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing(8)};
@@ -22,14 +24,15 @@ export const ChapterCardContainer = styled(RowFlexContainer)`
   border: ${({ theme }) => theme.spacing(0.25)} solid var(--border);
   border-radius: ${({ theme }) => theme.radii.md};
   background: var(--surface);
+  opacity: ${({ $isAvailable }) => ($isAvailable ? 1 : 0.72)};
   transition:
     border-color ${({ theme }) => theme.transitions.default},
     transform ${({ theme }) => theme.transitions.default};
 
-  ${ChapterCardLink}:hover & {
-    border-color: var(--accent);
-    transform: translateY(${({ theme }) => theme.spacing(-0.25)});
-  }
+  ${({ $isAvailable }) => $isAvailable && `${ChapterCardLink}:hover & {`}
+  border-color: var(--accent);
+  transform: translateY(${({ theme }) => theme.spacing(-0.25)});
+  ${({ $isAvailable }) => $isAvailable && '}'}
 
   > :first-child {
     min-width: 0;

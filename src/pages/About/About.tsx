@@ -62,7 +62,7 @@ export const About: React.FC = () => (
           Written slowly. Shared warmly.
         </Typography>
       </Signature>
-      <InstagramLink
+      {/* <InstagramLink
         href="https://www.instagram.com/"
         target="_blank"
         rel="noreferrer"
@@ -70,7 +70,7 @@ export const About: React.FC = () => (
       >
         <Instagram aria-hidden="true" />
         Instagram
-      </InstagramLink>
+      </InstagramLink> */}
     </ColumnFlexContainer>
   </ColumnFlexContainer>
 );

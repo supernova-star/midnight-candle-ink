@@ -120,7 +120,21 @@ export const Reader: React.FC = () => {
               This chapter could not be loaded.
             </Typography>
           ) : markdown ? (
-            <ReactMarkdown>{markdown}</ReactMarkdown>
+            <ReactMarkdown
+              components={{
+                p: ({ children }) => {
+                  const isSceneBreak = String(children).trim() === '...';
+
+                  return (
+                    <p className={isSceneBreak ? 'scene-break' : undefined}>
+                      {children}
+                    </p>
+                  );
+                },
+              }}
+            >
+              {markdown}
+            </ReactMarkdown>
           ) : (
             <Typography variant="body1" color="var(--text-secondary)">
               Loading chapter...

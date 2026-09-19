@@ -23,7 +23,7 @@ export const stories: StoryMetadata[] = [
     id: 'the-photograph',
     title: 'The Photograph',
     genre: 'Horror',
-    readTime: 8,
+    readTime: 17,
     postedDay: 'September 19, 2026',
     summary: 'Some photographs are better left forgotten.',
     image: PHOTOGRAPH_IMAGE_URL,
