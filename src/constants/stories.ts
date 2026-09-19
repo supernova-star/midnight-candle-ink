@@ -1,3 +1,5 @@
+import { PHOTOGRAPH_IMAGE_URL } from '@/constants/assets';
+
 export type StoryMetadata = {
   id: string;
   title: string;
@@ -24,7 +26,7 @@ export const stories: StoryMetadata[] = [
     readTime: 8,
     postedDay: 'September 19, 2026',
     summary: 'Some photographs are better left forgotten.',
-    image: '/photograph.png',
+    image: PHOTOGRAPH_IMAGE_URL,
     chapters: [
       {
         id: 'the-camera',

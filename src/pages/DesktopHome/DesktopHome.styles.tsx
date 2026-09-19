@@ -3,6 +3,7 @@ import {
   ColumnFlexContainer,
   Container,
 } from '@/components/uiComponents/container/Container';
+import { MIDNIGHT_CANDLE_BACKGROUND_URL } from '@/constants/assets';
 
 export const HomePage = styled(Container)`
   position: relative;
@@ -19,7 +20,7 @@ export const HomePage = styled(Container)`
     inset: 0;
     pointer-events: none;
     z-index: -1;
-    background: url('/midnightCandle.png') center / cover no-repeat;
+    background: url(${MIDNIGHT_CANDLE_BACKGROUND_URL}) center / cover no-repeat;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
