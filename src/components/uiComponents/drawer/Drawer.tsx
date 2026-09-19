@@ -53,6 +53,10 @@ export const Drawer: React.FC<DrawerProps> = ({
   children,
 }) => {
   const vertical = isVertical(anchor);
+  const drawerWidth = typeof width === 'number' ? `${width}px` : width;
+  const drawerBackgroundImage = backgroundImage
+    ? `linear-gradient(145deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 42%), repeating-linear-gradient(0deg, transparent, transparent 39px, color-mix(in srgb, var(--border) 22%, transparent) 40px), url("${backgroundImage}")`
+    : undefined;
 
   return (
     <MuiDrawer
@@ -61,6 +65,26 @@ export const Drawer: React.FC<DrawerProps> = ({
       onClose={onClose}
       slotProps={{
         paper: {
+          style: {
+            backgroundColor:
+              'color-mix(in srgb, var(--surface) 88%, var(--background))',
+            backgroundImage: drawerBackgroundImage,
+            backgroundPosition: backgroundImage
+              ? 'center, center, bottom right'
+              : undefined,
+            backgroundRepeat: backgroundImage
+              ? 'no-repeat, repeat, no-repeat'
+              : undefined,
+            backgroundSize: backgroundImage
+              ? 'auto, auto, 72% auto'
+              : undefined,
+            width: vertical ? '100%' : drawerWidth,
+            minWidth: vertical
+              ? undefined
+              : `min(${drawerWidth}, calc(100vw - 24px))`,
+            flexShrink: 0,
+            boxSizing: 'border-box',
+          },
           sx: {
             backgroundColor:
               'color-mix(in srgb, var(--surface) 88%, var(--background))',
@@ -72,7 +96,10 @@ export const Drawer: React.FC<DrawerProps> = ({
               ? 'no-repeat, repeat, no-repeat'
               : undefined,
             backgroundSize: backgroundImage
-              ? 'auto, auto, 56% auto'
+              ? 'auto, auto, 72% auto'
+              : undefined,
+            backgroundBlendMode: backgroundImage
+              ? 'normal, normal, normal'
               : undefined,
             backdropFilter: 'blur(18px) saturate(0.9)',
             border: '1px solid var(--border)',
@@ -85,7 +112,6 @@ export const Drawer: React.FC<DrawerProps> = ({
                   : anchor === 'top'
                     ? '0 0 12px 12px'
                     : '12px 12px 0 0',
-            width: vertical ? '100%' : width,
             height: vertical ? height : '100%',
             overflow: 'visible',
             boxShadow: '0 18px 48px rgba(0, 0, 0, 0.28)',

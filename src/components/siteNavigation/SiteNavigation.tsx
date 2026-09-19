@@ -13,8 +13,8 @@ import { useThemeMode } from '@/components/themeManager/ThemeManager';
 import { useResponsive } from '@/hooks/useResponsive';
 import logoDark from '@/components/uiComponents/iconAssets/logoDark.svg';
 import logoLight from '@/components/uiComponents/iconAssets/logoLight.svg';
-import darkDrawerImage from '@/components/uiComponents/iconAssets/dark_drawer_image.svg';
-import lightDrawerImage from '@/components/uiComponents/iconAssets/light_drawer_image.svg';
+import darkDrawerImage from '@/components/uiComponents/iconAssets/dark_drawer_image.svg?url';
+import lightDrawerImage from '@/components/uiComponents/iconAssets/light_drawer_image.svg?url';
 import {
   Brand,
   BrandLogo,

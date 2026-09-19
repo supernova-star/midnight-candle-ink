@@ -181,6 +181,7 @@ export const DrawerNavigation = styled.nav`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2.5)};
   padding: ${({ theme }) => theme.spacing(6, 4, 6)};
+  color: var(--text-primary);
 `;
 
 export const DrawerQuote = styled.p`
@@ -251,7 +252,7 @@ export const DrawerNavigationItem = styled(Link)<{ $active?: boolean }>`
     $active
       ? 'color-mix(in srgb, var(--accent) 12%, transparent)'
       : 'transparent'};
-  color: inherit;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: ${({ $active }) => ($active ? 500 : 300)};
 
