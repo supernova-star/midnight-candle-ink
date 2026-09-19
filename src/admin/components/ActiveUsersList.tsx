@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { RefreshCw, Trash2 } from 'lucide-react';
-import { deleteUser, getUsers, UsersResponse } from '@/hooks/activeUsers';
+import { AlertTriangle, RefreshCw, Trash2 } from 'lucide-react';
+import {
+  deleteUser,
+  getUsers,
+  User,
+  UsersResponse,
+} from '@/hooks/activeUsers';
 import { Typography } from '@/components/uiComponents/typography/Typography';
 import { Button } from '@/components/uiComponents/button/Button';
+import { Modal } from '@/components/uiComponents/modal/Modal';
+import { colorPalette } from '@/theme/colors';
 import {
   ColumnFlexContainer,
   RowFlexContainer,
@@ -24,6 +31,8 @@ export const ActiveUsersList: React.FC = () => {
   const [deletingBrowserId, setDeletingBrowserId] = useState<string | null>(
     null,
   );
+  const [userPendingDeletion, setUserPendingDeletion] =
+    useState<User | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
 
   const loadUsers = async () => {
@@ -36,9 +45,10 @@ export const ActiveUsersList: React.FC = () => {
     }
   };
 
-  const handleDelete = async (browserId: string) => {
-    if (!window.confirm('Delete this visitor from Supabase?')) return;
+  const handleDelete = async () => {
+    if (!userPendingDeletion) return;
 
+    const browserId = userPendingDeletion.browser_id;
     setDeletingBrowserId(browserId);
     setErrorMessage('');
 
@@ -49,6 +59,7 @@ export const ActiveUsersList: React.FC = () => {
       setErrorMessage('Unable to delete this visitor. Please try again.');
     } finally {
       setDeletingBrowserId(null);
+      setUserPendingDeletion(null);
     }
   };
 
@@ -57,7 +68,13 @@ export const ActiveUsersList: React.FC = () => {
   }, []);
 
   return (
-    <ColumnFlexContainer gap={[3]} padding={[5, 0]}>
+    <ColumnFlexContainer
+      gap={[3]}
+      padding={[5, 0]}
+      flex={1}
+      minHeight={[0]}
+      sx={{ minWidth: 0 }}
+    >
       <RowFlexContainer alignItems="center" justifyContent="between" gap={[3]}>
         <ColumnFlexContainer gap={[1]}>
           <Typography color="adminDarkBrown" variant="h5" weight="semiBold">
@@ -85,7 +102,17 @@ export const ActiveUsersList: React.FC = () => {
         </Typography>
       )}
 
-      <ColumnFlexContainer gap={[2]}>
+      <ColumnFlexContainer
+        gap={[2]}
+        flex={1}
+        minHeight={[0]}
+        overflow="auto"
+        padding={[0, 1, 4, 0]}
+        sx={{
+          minWidth: 0,
+          scrollbarGutter: 'stable',
+        }}
+      >
         {userData.users.length === 0 ? (
           <Typography color="adminMuted">No visitors yet.</Typography>
         ) : (
@@ -132,12 +159,69 @@ export const ActiveUsersList: React.FC = () => {
                 disabled={deletingBrowserId === user.browser_id}
                 buttonStyles={{ width: 'hugContents' }}
                 sx={{ minWidth: 40, px: 1 }}
-                onClick={() => void handleDelete(user.browser_id)}
+                onClick={() => setUserPendingDeletion(user)}
               />
             </RowFlexContainer>
           ))
         )}
       </ColumnFlexContainer>
+
+      <Modal
+        open={Boolean(userPendingDeletion)}
+        onClose={() => setUserPendingDeletion(null)}
+        aria-labelledby="delete-visitor-title"
+        aria-describedby="delete-visitor-description"
+        fullScreenOnMobile={false}
+        contentStyle={{ width: 'min(420px, calc(100vw - 32px))' }}
+      >
+        <ColumnFlexContainer
+          gap={[3]}
+          padding={[6]}
+          backgroundColor="adminSurface"
+          borderRadius={[3]}
+        >
+          <RowFlexContainer alignItems="center" gap={[2]}>
+            <AlertTriangle size={22} color={colorPalette.adminDanger} />
+            <Typography
+              id="delete-visitor-title"
+              variant="h6"
+              color="adminDarkBrown"
+              weight="bold"
+            >
+              Delete visitor?
+            </Typography>
+          </RowFlexContainer>
+          <Typography id="delete-visitor-description" color="adminMuted">
+            This will permanently remove this browser from Supabase.
+          </Typography>
+          <Typography
+            color="adminDarkBrown"
+            weight="semiBold"
+            sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+          >
+            {userPendingDeletion?.browser_id}
+          </Typography>
+          <RowFlexContainer justifyContent="end" gap={[2]}>
+            <Button
+              text="Cancel"
+              variant="text"
+              size="small"
+              textOptions={{ textColor: 'adminDarkBrown' }}
+              onClick={() => setUserPendingDeletion(null)}
+              disabled={Boolean(deletingBrowserId)}
+            />
+            <Button
+              text={deletingBrowserId ? 'Deleting...' : 'Delete visitor'}
+              size="small"
+              variant="contained"
+              iconOptions={{ icon: Trash2, iconColor: 'white' }}
+              buttonStyles={{ bgColor: 'adminDanger', borderRadius: [2] }}
+              onClick={() => void handleDelete()}
+              disabled={Boolean(deletingBrowserId)}
+            />
+          </RowFlexContainer>
+        </ColumnFlexContainer>
+      </Modal>
     </ColumnFlexContainer>
   );
 };
