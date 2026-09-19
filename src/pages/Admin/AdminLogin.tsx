@@ -78,12 +78,10 @@ const LoginForm = styled.form`
 export const AdminLogin: React.FC = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError('');
     setIsSubmitting(true);
 
     try {
@@ -94,16 +92,12 @@ export const AdminLogin: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Unable to sign in with that password.');
+        throw new Error('Admin authentication failed.');
       }
 
-      navigate('/admin', { replace: true });
-    } catch (requestError) {
-      setError(
-        requestError instanceof Error
-          ? requestError.message
-          : 'Unable to sign in.',
-      );
+      navigate('/adminsupa/dashboard', { replace: true });
+    } catch {
+      navigate('/adminsupa/error', { replace: true });
     } finally {
       setIsSubmitting(false);
     }
@@ -128,7 +122,6 @@ export const AdminLogin: React.FC = () => {
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Signing in...' : 'Sign in'}
         </button>
-        <p role="alert">{error}</p>
       </LoginForm>
     </LoginPage>
   );

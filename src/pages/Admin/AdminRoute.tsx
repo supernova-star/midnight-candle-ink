@@ -31,7 +31,7 @@ export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/adminsupa" replace />;
   }
 
   return <>{children}</>;

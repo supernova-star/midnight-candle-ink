@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, CassetteTape } from 'lucide-react';
+import { ArrowLeft, Flame } from 'lucide-react';
 import { IconButton } from '@mui/material';
 import {
   ColumnFlexContainer,
@@ -34,7 +34,7 @@ export const AdminHeader = ({ onGoHome }: AdminHeaderProps) => (
           backgroundColor: colorPalette.adminDarkBrown,
         }}
       >
-        <CassetteTape size={20} strokeWidth={1.8} />
+        <Flame size={20} strokeWidth={1.8} />
       </Container>
       <ColumnFlexContainer gap={[0]}>
         <Typography

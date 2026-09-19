@@ -69,7 +69,10 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const sessionToken = getCookie(req.headers.cookie, 'casette_admin_session');
+  const sessionToken = getCookie(
+    req.headers.cookie,
+    'midnight_candle_admin_session',
+  );
 
   if (!sessionToken || !isValidSession(sessionToken)) {
     return res.status(401).json({
