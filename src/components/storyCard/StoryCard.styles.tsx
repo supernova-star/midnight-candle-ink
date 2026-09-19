@@ -16,6 +16,7 @@ export const CardLink = styled(Link)`
 `;
 
 export const Card = styled(ColumnFlexContainer)`
+  position: relative;
   height: 100%;
   overflow: hidden;
   border: ${({ theme }) => theme.spacing(0.25)} solid var(--border);
@@ -34,6 +35,18 @@ export const Card = styled(ColumnFlexContainer)`
       color-mix(in srgb, var(--text-primary) 12%, transparent);
     transform: translateY(${({ theme }) => theme.spacing(-0.5)});
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+    flex-direction: row;
+    align-items: center;
+    min-height: ${({ theme }) => theme.spacing(30)};
+
+    > div:last-child {
+      align-self: stretch;
+      justify-content: center;
+      padding: ${({ theme }) => theme.spacing(3, 10, 3, 2)};
+    }
+  }
 `;
 
 export const StoryImage = styled.img`
@@ -41,6 +54,14 @@ export const StoryImage = styled.img`
   width: 100%;
   aspect-ratio: 6 / 5;
   object-fit: cover;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+    width: ${({ theme }) => theme.spacing(26)};
+    height: ${({ theme }) => theme.spacing(26)};
+    flex-shrink: 0;
+    margin: ${({ theme }) => theme.spacing(2)};
+    border-radius: ${({ theme }) => theme.radii.md};
+  }
 `;
 
 export const ReadLabel = styled.span`
@@ -55,5 +76,20 @@ export const ReadLabel = styled.span`
   svg {
     width: ${({ theme }) => theme.spacing(4)};
     height: ${({ theme }) => theme.spacing(4)};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+    position: absolute;
+    top: 50%;
+    right: ${({ theme }) => theme.spacing(3)};
+    margin-top: 0;
+    transform: translateY(-50%);
+    font-size: 0;
+
+    svg {
+      width: ${({ theme }) => theme.spacing(5)};
+      height: ${({ theme }) => theme.spacing(5)};
+      color: var(--text-primary);
+    }
   }
 `;

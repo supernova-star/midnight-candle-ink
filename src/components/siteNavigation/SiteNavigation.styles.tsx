@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { RowFlexContainer } from '@/components/uiComponents/container/Container';
+import { colorPalette } from '@/theme/colors';
 
 export const SiteHeader = styled(RowFlexContainer)`
   position: relative;
@@ -73,7 +74,7 @@ export const Navigation = styled(RowFlexContainer)`
   gap: ${({ theme }) => theme.spacing(5)};
   font-family: ${({ theme }) => theme.typography.displayFontFamily};
   font-size: 1rem;
-  font-weight: 300;
+  font-weight: 400;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
     gap: ${({ theme }) => theme.spacing(3)};
@@ -88,12 +89,17 @@ export const NavigationItem = styled(Link)<{ $active?: boolean }>`
   color: inherit;
   cursor: pointer;
   opacity: ${({ $active }) => ($active ? 1 : 0.82)};
+  transition:
+    color ${({ theme }) => theme.transitions.default},
+    opacity ${({ theme }) => theme.transitions.default},
+    transform ${({ theme }) => theme.transitions.default};
 
   svg {
     width: ${({ theme }) => theme.spacing(4)};
     height: ${({ theme }) => theme.spacing(4)};
     flex-shrink: 0;
     stroke-width: 1.6;
+    transition: transform ${({ theme }) => theme.transitions.default};
   }
 
   &::after {
@@ -105,6 +111,33 @@ export const NavigationItem = styled(Link)<{ $active?: boolean }>`
     height: ${({ theme }) => theme.spacing(0.25)};
     background: currentColor;
     opacity: ${({ $active }) => ($active ? 0.75 : 0)};
+    transform: scaleX(${({ $active }) => ($active ? 1 : 0)});
+    transform-origin: right;
+    transition:
+      opacity ${({ theme }) => theme.transitions.default},
+      transform ${({ theme }) => theme.transitions.default};
+  }
+
+  &:hover {
+    color: ${colorPalette.adminYellow};
+    opacity: 1;
+    transform: translateY(${({ theme }) => theme.spacing(-0.25)});
+
+    svg {
+      transform: translateY(${({ theme }) => theme.spacing(-0.25)});
+    }
+
+    &::after {
+      opacity: 0.75;
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+
+  &:focus-visible {
+    outline: ${({ theme }) => theme.spacing(0.25)} solid
+      ${colorPalette.adminYellow};
+    outline-offset: ${({ theme }) => theme.spacing(1)};
   }
 `;
 
@@ -148,6 +181,28 @@ export const DrawerNavigation = styled.nav`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2.5)};
   padding: ${({ theme }) => theme.spacing(6, 4, 6)};
+`;
+
+export const DrawerQuote = styled.p`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing(0.5)};
+  margin: auto 0 0;
+  padding: ${({ theme }) => theme.spacing(8, 2, 1)};
+  color: var(--text-secondary);
+  font-family: Georgia, serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.2;
+
+  i {
+    display: block;
+    width: ${({ theme }) => theme.spacing(10)};
+    height: ${({ theme }) => theme.spacing(0.5)};
+    margin-top: ${({ theme }) => theme.spacing(4)};
+    background: var(--accent);
+  }
 `;
 
 export const DrawerBrand = styled.div`

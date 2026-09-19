@@ -19,8 +19,22 @@ export const HomePage = styled(Container)`
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: -1;
+    z-index: -2;
     background: url(${MIDNIGHT_CANDLE_BACKGROUND_URL}) center / cover no-repeat;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background: linear-gradient(
+      180deg,
+      rgba(12, 10, 9, 0.42) 0%,
+      rgba(12, 10, 9, 0.34) 48%,
+      rgba(12, 10, 9, 0.56) 100%
+    );
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {

@@ -11,6 +11,7 @@ interface DrawerProps {
   anchor?: DrawerAnchor;
   width?: string | number;
   height?: string | number;
+  backgroundImage?: string;
   children: ReactNode;
 }
 
@@ -48,6 +49,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   anchor = 'left',
   width = 320,
   height = 320,
+  backgroundImage,
   children,
 }) => {
   const vertical = isVertical(anchor);
@@ -62,8 +64,16 @@ export const Drawer: React.FC<DrawerProps> = ({
           sx: {
             backgroundColor:
               'color-mix(in srgb, var(--surface) 88%, var(--background))',
-            backgroundImage:
-              'linear-gradient(145deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 42%), repeating-linear-gradient(0deg, transparent, transparent 39px, color-mix(in srgb, var(--border) 22%, transparent) 40px)',
+            backgroundImage: `linear-gradient(145deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 42%), repeating-linear-gradient(0deg, transparent, transparent 39px, color-mix(in srgb, var(--border) 22%, transparent) 40px)${backgroundImage ? `, url(${backgroundImage})` : ''}`,
+            backgroundPosition: backgroundImage
+              ? 'center, center, bottom right'
+              : undefined,
+            backgroundRepeat: backgroundImage
+              ? 'no-repeat, repeat, no-repeat'
+              : undefined,
+            backgroundSize: backgroundImage
+              ? 'auto, auto, 56% auto'
+              : undefined,
             backdropFilter: 'blur(18px) saturate(0.9)',
             border: '1px solid var(--border)',
             color: 'var(--text-primary)',

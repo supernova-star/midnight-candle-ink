@@ -9,6 +9,7 @@ import {
   ChapterMeta,
   ChapterNumber,
 } from './ChapterCard.styles';
+import { useResponsive } from '@/hooks/useResponsive';
 
 type ChapterCardProps = {
   chapter: ChapterMetadata;
@@ -23,11 +24,16 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
   storyId,
   isAvailable = true,
 }) => {
+  const isMobile = useResponsive();
   const content = (
     <ChapterCardContainer element="article" $isAvailable={isAvailable}>
       <ColumnFlexContainer gap={[1.5]}>
         <ChapterNumber>Chapter {chapterNumber}</ChapterNumber>
-        <Typography variant="h6" weight="semiBold" color="var(--text-primary)">
+        <Typography
+          variant={isMobile ? 'subtitle1' : 'h6'}
+          weight="semiBold"
+          color="var(--text-primary)"
+        >
           {chapter.title}
         </Typography>
       </ColumnFlexContainer>

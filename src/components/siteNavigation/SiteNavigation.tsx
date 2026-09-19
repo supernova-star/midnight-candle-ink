@@ -13,6 +13,8 @@ import { useThemeMode } from '@/components/themeManager/ThemeManager';
 import { useResponsive } from '@/hooks/useResponsive';
 import logoDark from '@/components/uiComponents/iconAssets/logoDark.svg';
 import logoLight from '@/components/uiComponents/iconAssets/logoLight.svg';
+import darkDrawerImage from '@/components/uiComponents/iconAssets/dark_drawer_image.svg';
+import lightDrawerImage from '@/components/uiComponents/iconAssets/light_drawer_image.svg';
 import {
   Brand,
   BrandLogo,
@@ -22,6 +24,7 @@ import {
   DrawerBrandName,
   DrawerNavigation,
   DrawerNavigationItem,
+  DrawerQuote,
   MobileActions,
   MenuButton,
   ModeButton,
@@ -79,7 +82,14 @@ export const SiteNavigation: React.FC = () => {
               <Menu aria-hidden="true" />
             </MenuButton>
           </MobileActions>
-          <Drawer open={isMenuOpen} onClose={closeMenu} width={280}>
+          <Drawer
+            open={isMenuOpen}
+            onClose={closeMenu}
+            width={320}
+            backgroundImage={
+              mode === 'dark' ? darkDrawerImage : lightDrawerImage
+            }
+          >
             <DrawerNavigation
               id="mobile-navigation"
               aria-label="Primary navigation"
@@ -119,6 +129,11 @@ export const SiteNavigation: React.FC = () => {
                 <Info aria-hidden="true" />
                 About
               </DrawerNavigationItem>
+              <DrawerQuote>
+                <span>Stories for</span>
+                <span>quieter days.</span>
+                <i aria-hidden="true" />
+              </DrawerQuote>
             </DrawerNavigation>
           </Drawer>
         </>
