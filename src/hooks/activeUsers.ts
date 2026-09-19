@@ -24,3 +24,14 @@ export const getUsers = async (): Promise<UsersResponse> => {
 
   return (await response.json()) as UsersResponse;
 };
+
+export const deleteUser = async (browserId: string): Promise<void> => {
+  const response = await fetch(
+    `/api/admin/users?browser_id=${encodeURIComponent(browserId)}`,
+    { method: 'DELETE' },
+  );
+
+  if (!response.ok) {
+    throw new Error('Unable to delete visitor');
+  }
+};

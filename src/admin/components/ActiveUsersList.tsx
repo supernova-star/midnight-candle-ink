@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { RefreshCw } from 'lucide-react';
-import { getUsers, UsersResponse } from '@/hooks/activeUsers';
+import { RefreshCw, Trash2 } from 'lucide-react';
+import { deleteUser, getUsers, UsersResponse } from '@/hooks/activeUsers';
 import { Typography } from '@/components/uiComponents/typography/Typography';
 import { Button } from '@/components/uiComponents/button/Button';
 import {
@@ -21,13 +21,34 @@ export const ActiveUsersList: React.FC = () => {
     activeUsers: 0,
   });
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [deletingBrowserId, setDeletingBrowserId] = useState<string | null>(
+    null,
+  );
+  const [errorMessage, setErrorMessage] = useState('');
 
   const loadUsers = async () => {
     setIsRefreshing(true);
+    setErrorMessage('');
     try {
       setUserData(await getUsers());
     } finally {
       setIsRefreshing(false);
+    }
+  };
+
+  const handleDelete = async (browserId: string) => {
+    if (!window.confirm('Delete this visitor from Supabase?')) return;
+
+    setDeletingBrowserId(browserId);
+    setErrorMessage('');
+
+    try {
+      await deleteUser(browserId);
+      await loadUsers();
+    } catch {
+      setErrorMessage('Unable to delete this visitor. Please try again.');
+    } finally {
+      setDeletingBrowserId(null);
     }
   };
 
@@ -57,6 +78,12 @@ export const ActiveUsersList: React.FC = () => {
           onClick={loadUsers}
         />
       </RowFlexContainer>
+
+      {errorMessage && (
+        <Typography color="adminDanger" variant="body2">
+          {errorMessage}
+        </Typography>
+      )}
 
       <ColumnFlexContainer gap={[2]}>
         {userData.users.length === 0 ? (
@@ -95,6 +122,18 @@ export const ActiveUsersList: React.FC = () => {
               >
                 {user.is_active ? 'ACTIVE' : 'INACTIVE'}
               </Typography>
+              <Button
+                text=""
+                variant="text"
+                size="small"
+                iconOptions={{ icon: Trash2, iconColor: 'adminDanger' }}
+                aria-label={`Delete visitor ${user.browser_id}`}
+                title="Delete visitor"
+                disabled={deletingBrowserId === user.browser_id}
+                buttonStyles={{ width: 'hugContents' }}
+                sx={{ minWidth: 40, px: 1 }}
+                onClick={() => void handleDelete(user.browser_id)}
+              />
             </RowFlexContainer>
           ))
         )}
