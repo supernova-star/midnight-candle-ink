@@ -40,7 +40,6 @@ export const SiteNavigation: React.FC = () => {
   const isMobile = useResponsive();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const modeLogo = mode === 'dark' ? logoDark : logoLight;
-  const headerLogo = pathname === '/' ? logoDark : modeLogo;
 
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -62,7 +61,7 @@ export const SiteNavigation: React.FC = () => {
   return (
     <SiteHeader element="header">
       <Brand to="/" aria-label="Midnight Candle home">
-        <BrandLogo src={headerLogo} alt="" aria-hidden="true" />
+        <BrandLogo src={modeLogo} alt="" aria-hidden="true" />
         <BrandName>
           <span>Midnight</span>Candle & Ink
         </BrandName>

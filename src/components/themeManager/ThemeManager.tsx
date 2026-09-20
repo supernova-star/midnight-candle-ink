@@ -7,6 +7,10 @@ import React, {
 import { colorPalette } from '@/theme/colors';
 import { modePalettes } from '@/theme/palette';
 import type { ColorMode } from '@/theme/themeTypes';
+import {
+  MIDNIGHT_CANDLE_BACKGROUND_DARK_URL,
+  MIDNIGHT_CANDLE_BACKGROUND_LIGHT_URL,
+} from '@/constants/assets';
 
 export type { ColorMode } from '@/theme/themeTypes';
 
@@ -52,6 +56,37 @@ const getModeVariables = (mode: ColorMode) => {
     '--button-disabled-text': palette.buttonDisabledText,
     '--button-hover-bg': palette.buttonHoverBG,
     '--button-hover-text': palette.buttonHoverText,
+
+    '--home-text-shadow':
+      mode === 'dark'
+        ? '0 2px 4px rgba(0, 0, 0, 0.72)'
+        : '0 1px 3px rgba(255, 252, 247, 0.85)',
+
+    '--background-image-position':
+      mode === 'dark' ? '30% center' : '85% center',
+
+    '--background-image-position-tablet':
+      mode === 'dark' ? '30% center' : '90% center',
+
+    '--home-background-image': `url(${
+      mode === 'dark'
+        ? MIDNIGHT_CANDLE_BACKGROUND_DARK_URL
+        : MIDNIGHT_CANDLE_BACKGROUND_LIGHT_URL
+    })`,
+    '--home-overlayGradient':
+      mode === 'dark'
+        ? `linear-gradient(
+          180deg,
+          rgba(12, 10, 9, 0.42) 0%,
+          rgba(12, 10, 9, 0.34) 48%,
+          rgba(12, 10, 9, 0.56) 100%
+        )`
+        : `linear-gradient(
+        180deg,
+        rgba(255, 252, 247, 0.08) 0%,
+        rgba(255, 252, 247, 0.02) 48%,
+        rgba(255, 252, 247, 0.24) 100%
+      )`,
   } as const;
 };
 

@@ -3,15 +3,14 @@ import {
   ColumnFlexContainer,
   Container,
 } from '@/components/uiComponents/container/Container';
-import { MIDNIGHT_CANDLE_BACKGROUND_URL } from '@/constants/assets';
 
 export const HomePage = styled(Container)`
   position: relative;
   min-width: 0;
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
   isolation: isolate;
-  color: var(--home-text);
+  color: var(--text-primary);
   transition: color ${({ theme }) => theme.transitions.default};
 
   &::before {
@@ -20,7 +19,7 @@ export const HomePage = styled(Container)`
     inset: 0;
     pointer-events: none;
     z-index: -2;
-    background: url(${MIDNIGHT_CANDLE_BACKGROUND_URL}) center / cover no-repeat;
+    background: var(--home-background-image) center / cover no-repeat;
   }
 
   &::after {
@@ -29,17 +28,18 @@ export const HomePage = styled(Container)`
     inset: 0;
     pointer-events: none;
     z-index: -1;
-    background: linear-gradient(
-      180deg,
-      rgba(12, 10, 9, 0.42) 0%,
-      rgba(12, 10, 9, 0.34) 48%,
-      rgba(12, 10, 9, 0.56) 100%
-    );
+    background: var(--home-overlayGradient);
+  }
+
+  @media (min-width: 769px) and (max-width: 1100px) {
+    &::before {
+      background-position: var(--background-image-position-tablet);
+    }
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
     &::before {
-      background-position: 30% center;
+      background-position: var(--background-image-position);
     }
   }
 `;
@@ -47,8 +47,6 @@ export const HomePage = styled(Container)`
 export const HeroContent = styled(ColumnFlexContainer)`
   position: relative;
   z-index: 1;
-  margin: ${({ theme }) => theme.spacing(12, 0, 0)};
-  min-height: calc(100vh - ${({ theme }) => theme.spacing(26.25)});
   align-items: center;
   padding: clamp(
       ${({ theme }) => theme.spacing(17.5)},
@@ -57,13 +55,13 @@ export const HeroContent = styled(ColumnFlexContainer)`
     )
     ${({ theme }) => theme.spacing(10)} ${({ theme }) => theme.spacing(20)};
   text-align: center;
-  text-shadow: ${({ theme }) => theme.spacing(0, 0.5, 4.5)} rgba(0, 0, 0, 0.72);
+  text-shadow: var(--home-text-shadow);
 
   h1 {
     margin: 0;
     font-family: ${({ theme }) => theme.typography.displayFontFamily};
     font-size: clamp(2.75rem, 4.2vw, 4rem);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.16;
     letter-spacing: 0;
   }
@@ -78,7 +76,6 @@ export const HeroContent = styled(ColumnFlexContainer)`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
-    min-height: calc(100dvh - ${({ theme }) => theme.spacing(18.5)});
     padding: ${({ theme }) => theme.spacing(12, 4, 16)};
 
     h1 {
