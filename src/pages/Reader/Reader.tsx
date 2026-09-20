@@ -3,10 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/uiComponents/button/Button';
-import {
-  ColumnFlexContainer,
-  Container,
-} from '@/components/uiComponents/container/Container';
+import { ColumnFlexContainer } from '@/components/uiComponents/container/Container';
 import { SiteNavigation } from '@/components/siteNavigation/SiteNavigation';
 import { Typography } from '@/components/uiComponents/typography/Typography';
 import { stories } from '@/constants/stories';
@@ -76,43 +73,43 @@ export const Reader: React.FC = () => {
     >
       <SiteNavigation />
       <ReaderContent $isMobile={isMobile}>
-        <Container
-          display="flex"
-          flexDirection={isMobile ? 'column' : 'row'}
-          gap={[1]}
-          alignItems="center"
+        <Button
+          text={`Back to ${story.title}`}
+          size="xSmall"
+          iconOptions={{
+            icon: ArrowLeft,
+            iconColor: 'var(--button-primary-text)',
+          }}
+          textOptions={{
+            textColor: 'var(--button-primary-text)',
+            textVariant: 'caption',
+            textWeight: 'regular',
+          }}
+          buttonStyles={{
+            bgColor: 'var(--button-primary-bg)',
+            borderRadius: [2],
+          }}
+          onClick={() => navigate(`/stories/${story.id}`)}
+          sx={{
+            alignSelf: 'flex-start',
+            '&:hover': { backgroundColor: 'var(--button-hover-bg)' },
+            '&:hover .MuiTypography-root': {
+              color: 'var(--button-hover-text)',
+            },
+            '&:hover .MuiButton-startIcon svg': {
+              color: 'var(--button-hover-text)',
+            },
+          }}
+        />
+        <Typography
+          component="h1"
+          variant={isMobile ? 'body2' : 'h6'}
+          weight="semiBold"
+          color="var(--accent)"
+          sx={{ margin: theme.spacing(2, 0), padding: theme.spacing(0, 3) }}
         >
-          <Button
-            text={`Back to ${story.title}`}
-            variant="text"
-            size="small"
-            iconOptions={{
-              icon: ArrowLeft,
-              iconColor: 'var(--text-secondary)',
-            }}
-            textOptions={{
-              textColor: 'var(--text-secondary)',
-              textVariant: 'caption',
-              textWeight: 'regular',
-            }}
-            onClick={() => navigate(`/stories/${story.id}`)}
-            sx={{
-              alignSelf: 'flex-start',
-              '&:hover': { backgroundColor: 'transparent' },
-              '&:hover .MuiTypography-root': { color: 'var(--accent)' },
-              '&:hover .MuiButton-startIcon svg': { color: 'var(--accent)' },
-            }}
-          />
-          <Typography
-            component="h1"
-            variant={isMobile ? 'body2' : 'h6'}
-            weight="semiBold"
-            color="var(--accent)"
-            sx={{ flex: 1, margin: theme.spacing(2, 0) }}
-          >
-            Chapter {chapterIndex + 1} - {chapter.title}
-          </Typography>
-        </Container>
+          Chapter {chapterIndex + 1} - {chapter.title}
+        </Typography>
 
         <ReadingBody>
           {hasLoadError ? (
@@ -123,14 +120,27 @@ export const Reader: React.FC = () => {
             <ReactMarkdown
               components={{
                 p: ({ children }) => {
-                  const isSceneBreak = String(children).trim() === '...';
+                  const content = String(children).trim();
+
+                  const isSceneBreak = content === '...';
+                  const isStoryEnd = content === '❦';
 
                   return (
-                    <p className={isSceneBreak ? 'scene-break' : undefined}>
+                    <p
+                      className={
+                        isSceneBreak
+                          ? 'scene-break'
+                          : isStoryEnd
+                            ? 'story-end-ornament'
+                            : undefined
+                      }
+                    >
                       {children}
                     </p>
                   );
                 },
+
+                h3: ({ children }) => <h3 className="story-end">{children}</h3>,
               }}
             >
               {markdown}

@@ -72,24 +72,31 @@ export const StoryDetail: React.FC = () => {
       <StoryDetailContent>
         <Button
           text="Back to stories"
-          variant="text"
           size="xSmall"
-          iconOptions={{ icon: ArrowLeft, iconColor: 'var(--text-secondary)' }}
+          iconOptions={{
+            icon: ArrowLeft,
+            iconColor: 'var(--button-primary-text)',
+          }}
           textOptions={{
-            textColor: 'var(--text-secondary)',
+            textColor: 'var(--button-primary-text)',
             textVariant: 'caption',
             textWeight: 'regular',
           }}
-          buttonStyles={{ margin: [0, 0, 4] }}
-          onClick={() => navigate('/stories')}
+          buttonStyles={{
+            bgColor: 'var(--button-primary-bg)',
+            borderRadius: [2],
+          }}
+          onClick={() => navigate(`/stories`)}
           sx={{
             alignSelf: 'flex-start',
-            color: 'var(--text-secondary)',
-            '&:hover': {
-              backgroundColor: 'transparent',
+            margin: '0 0 16px 0',
+            '&:hover': { backgroundColor: 'var(--button-hover-bg)' },
+            '&:hover .MuiTypography-root': {
+              color: 'var(--button-hover-text)',
             },
-            '&:hover .MuiTypography-root': { color: 'var(--accent)' },
-            '&:hover .MuiButton-startIcon svg': { color: 'var(--accent)' },
+            '&:hover .MuiButton-startIcon svg': {
+              color: 'var(--button-hover-text)',
+            },
           }}
         />
         <StoryHeader>
@@ -141,7 +148,7 @@ export const StoryDetail: React.FC = () => {
                 chapter={chapter}
                 chapterNumber={index + 1}
                 storyId={story.id}
-                isAvailable={index === 0}
+                isAvailable={chapter.isAvailable}
               />
             ))}
           </ChaptersList>

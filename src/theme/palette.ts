@@ -10,6 +10,13 @@ export const modePalettes: Record<ColorMode, ModePalette> = {
     border: '#E4DDD4',
     button: '#3A302A',
     accent: '#76504C',
+
+    buttonPrimaryBG: '#6B3A46',
+    buttonPrimaryText: '#FFF8F0',
+    buttonDisabledBG: '#D8D0CA',
+    buttonDisabledText: '#9A918B',
+    buttonHoverBG: '#4f1a27',
+    buttonHoverText: '#FFF8F0',
   },
   dark: {
     background: '#181513',
@@ -20,5 +27,12 @@ export const modePalettes: Record<ColorMode, ModePalette> = {
     border: '#3A332E',
     button: '#E9DFD2',
     accent: '#A87570',
+
+    buttonPrimaryBG: '#9A5967',
+    buttonPrimaryText: '#FFF7ED',
+    buttonDisabledBG: '#403A3A',
+    buttonDisabledText: '#777070',
+    buttonHoverBG: '#663c45',
+    buttonHoverText: '#FFF7ED',
   },
 };

@@ -11,8 +11,7 @@ export const ReaderContent = styled(ColumnFlexContainer)<{
   min-height: 0;
   flex: 1;
   margin: 0 auto;
-  padding: ${({ $isMobile, theme }) =>
-    theme.spacing($isMobile ? 4 : 8, 0, $isMobile ? 4 : 8)};
+  padding: ${({ $isMobile, theme }) => theme.spacing(4, 0, $isMobile ? 4 : 8)};
   overflow: hidden;
 `;
 
@@ -51,13 +50,29 @@ export const ReadingBody = styled.article`
   .scene-break {
     margin: ${({ theme }) => theme.spacing(7, 0)};
     color: var(--accent);
-    font-size: 1.25rem;
-    letter-spacing: ${({ theme }) => theme.spacing(1)};
+    font-size: 2rem;
+    letter-spacing: ${({ theme }) => theme.spacing(4)};
     line-height: 1;
     text-align: center;
   }
 
-  h2,
+  .story-end-ornament {
+    text-align: center;
+    font-size: 2rem;
+    margin: 24px 0 8px;
+  }
+
+  .story-end {
+    text-align: center;
+    font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: 4px;
+    margin-top: 0px;
+  }
+  h2 {
+    margin: ${({ theme }) => theme.spacing(1, 0)};
+    letter-spacing: 0;
+  }
   h3 {
     margin: ${({ theme }) => theme.spacing(8, 0, 3)};
     letter-spacing: 0;

@@ -45,6 +45,13 @@ const getModeVariables = (mode: ColorMode) => {
     '--border': palette.border,
     '--button': palette.button,
     '--accent': palette.accent,
+
+    '--button-primary-bg': palette.buttonPrimaryBG,
+    '--button-primary-text': palette.buttonPrimaryText,
+    '--button-disabled-bg': palette.buttonDisabledBG,
+    '--button-disabled-text': palette.buttonDisabledText,
+    '--button-hover-bg': palette.buttonHoverBG,
+    '--button-hover-text': palette.buttonHoverText,
   } as const;
 };
 

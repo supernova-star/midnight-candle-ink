@@ -15,4 +15,11 @@ export type ModePalette = {
   border: string;
   button: string;
   accent: string;
+
+  buttonPrimaryBG: string;
+  buttonPrimaryText: string;
+  buttonDisabledBG: string;
+  buttonDisabledText: string;
+  buttonHoverBG: string;
+  buttonHoverText: string;
 };

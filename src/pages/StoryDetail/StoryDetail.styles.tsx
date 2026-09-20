@@ -12,7 +12,7 @@ export const StoryDetailContent = styled(ColumnFlexContainer)`
   min-height: 0;
   flex: 1;
   margin: 0 auto;
-  padding: ${({ theme }) => theme.spacing(8, 0, 8)};
+  padding: ${({ theme }) => theme.spacing(4, 0, 8)};
   overflow: hidden;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {

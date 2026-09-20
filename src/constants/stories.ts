@@ -15,12 +15,13 @@ export type ChapterMetadata = {
   id: string;
   title: string;
   readTime: string;
+  isAvailable: boolean;
   markdownUrl: string;
 };
 
 export const stories: StoryMetadata[] = [
   {
-    id: 'the-photograph',
+    id: 'the-photograph-zs2gw7f2',
     title: 'The Photograph',
     genre: 'Horror',
     readTime: 17,
@@ -29,30 +30,34 @@ export const stories: StoryMetadata[] = [
     image: PHOTOGRAPH_IMAGE_URL,
     chapters: [
       {
-        id: 'the-camera',
+        id: 'chapter-1-huqc1c',
         title: 'The Camera',
         readTime: '3 min',
+        isAvailable: true,
         markdownUrl: new URL('./the-photograph/the-camera.md', import.meta.url)
           .href,
       },
       {
-        id: 'the-figure',
+        id: 'chapter-2-68qw4u',
         title: 'The Figure',
         readTime: '4 min',
+        isAvailable: false,
         markdownUrl: new URL('./the-photograph/the-figure.md', import.meta.url)
           .href,
       },
       {
-        id: 'closer',
+        id: 'chapter-3-3w8koa',
         title: 'Closer',
         readTime: '5 min',
+        isAvailable: false,
         markdownUrl: new URL('./the-photograph/closer.md', import.meta.url)
           .href,
       },
       {
-        id: 'dont-wake-her',
+        id: 'chapter-4-9x2j1b',
         title: 'Don’t Wake Her',
         readTime: '5 min',
+        isAvailable: false,
         markdownUrl: new URL(
           './the-photograph/dont-wake-her.md',
           import.meta.url,
