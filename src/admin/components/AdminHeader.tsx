@@ -1,13 +1,14 @@
 import React from 'react';
-import { ArrowLeft, Flame, MessageCircle, Users } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Users } from 'lucide-react';
 import { IconButton } from '@mui/material';
 import {
   ColumnFlexContainer,
-  Container,
   RowFlexContainer,
 } from '@/components/uiComponents/container/Container';
 import { Typography } from '@/components/uiComponents/typography/Typography';
 import type { AdminView } from './AdminShell';
+import logoLight from '@/components/uiComponents/iconAssets/logoLight.svg';
+import styled from 'styled-components';
 
 type AdminHeaderProps = {
   activeView: AdminView;
@@ -35,20 +36,7 @@ export const AdminHeader = ({
   >
     <RowFlexContainer alignItems="center" justifyContent="between">
       <RowFlexContainer alignItems="center" gap={[3]}>
-        <Container
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius={[2]}
-          sx={{
-            width: 42,
-            height: 42,
-            backgroundColor: 'var(--admin-brand-dark)',
-            color: 'var(--admin-surface)',
-          }}
-        >
-          <Flame size={22} strokeWidth={1.8} />
-        </Container>
+        <BrandLogo src={logoLight} alt="" aria-hidden="true" />
 
         <ColumnFlexContainer gap={[0]}>
           <Typography
@@ -158,3 +146,15 @@ const AdminViewButton = ({
     {label}
   </button>
 );
+
+export const BrandLogo = styled.img`
+  display: block;
+  width: ${({ theme }) => theme.spacing(12)};
+  height: ${({ theme }) => theme.spacing(10)};
+  object-fit: contain;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
+    width: ${({ theme }) => theme.spacing(9)};
+    height: ${({ theme }) => theme.spacing(8)};
+  }
+`;

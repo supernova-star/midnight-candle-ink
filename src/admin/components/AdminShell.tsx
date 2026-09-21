@@ -50,15 +50,7 @@ export const AdminShell = ({ onGoHome }: AdminShellProps) => {
         >
           {activeView === 'visitors' && <ActiveUsersList />}
 
-          {activeView === 'feedback' && (
-            <ColumnFlexContainer
-              flex={1}
-              alignItems="center"
-              justifyContent="center"
-            >
-              {activeView === 'feedback' && <FeedbackList />}
-            </ColumnFlexContainer>
-          )}
+          {activeView === 'feedback' && <FeedbackList />}
         </ColumnFlexContainer>
       </ColumnFlexContainer>
     </ColumnFlexContainer>

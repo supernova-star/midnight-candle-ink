@@ -92,6 +92,10 @@ const getModeVariables = (mode: ColorMode) => {
     '--button': palette.button,
     '--accent': palette.accent,
     '--accent-selected': colorPalette.accentSelected,
+    '--button-selected':
+      mode === 'dark' ? colorPalette.darkBg : colorPalette.lightSelected,
+    '--button-focus':
+      mode === 'dark' ? colorPalette.darkSelected : colorPalette.text,
 
     '--button-primary-bg': palette.buttonPrimaryBG,
     '--button-primary-text': palette.buttonPrimaryText,

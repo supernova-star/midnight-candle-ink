@@ -62,15 +62,15 @@ export const About: React.FC = () => (
           Written slowly. Shared warmly.
         </Typography>
       </Signature>
-      {/* <InstagramLink
-        href="https://www.instagram.com/"
+      <InstagramLink
+        href="https://www.instagram.com/midnight_candle_stories/"
         target="_blank"
         rel="noreferrer"
         aria-label="Visit Midnight Candle and Ink on Instagram"
       >
         <Instagram aria-hidden="true" />
         Instagram
-      </InstagramLink> */}
+      </InstagramLink>
     </ColumnFlexContainer>
   </ColumnFlexContainer>
 );

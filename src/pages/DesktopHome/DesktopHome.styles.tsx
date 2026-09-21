@@ -55,7 +55,6 @@ export const HeroContent = styled(ColumnFlexContainer)`
     )
     ${({ theme }) => theme.spacing(10)} ${({ theme }) => theme.spacing(20)};
   text-align: center;
-  text-shadow: var(--home-text-shadow);
 
   h1 {
     margin: 0;
@@ -92,7 +91,8 @@ export const HeroContent = styled(ColumnFlexContainer)`
 export const PrimaryAction = styled.button`
   display: inline-flex;
   min-width: ${({ theme }) => theme.spacing(48)};
-  height: ${({ theme }) => theme.spacing(12.5)};
+  height: ${({ theme }) => theme.spacing(12)};
+  width: ${({ theme }) => theme.spacing(60)};
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => theme.spacing(3)};
@@ -122,5 +122,37 @@ export const PrimaryAction = styled.button`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
     min-width: ${({ theme }) => theme.spacing(40)};
+  }
+`;
+
+export const InstagramLink = styled.a`
+  display: inline-flex;
+  height: ${({ theme }) => theme.spacing(12)};
+  background-color: var(--button-selected);
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(0, 4)};
+  border: ${({ theme }) => theme.spacing(0.25)} solid var(--text-primary);
+  border-radius: ${({ theme }) => theme.spacing(1)};
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  width: ${({ theme }) => theme.spacing(60)};
+  transition:
+    border-color ${({ theme }) => theme.transitions.default},
+    color ${({ theme }) => theme.transitions.default},
+    background ${({ theme }) => theme.transitions.default};
+
+  svg {
+    width: ${({ theme }) => theme.spacing(4.5)};
+    height: ${({ theme }) => theme.spacing(4.5)};
+  }
+
+  &:hover {
+    /* border-color: var(--accent); */
+    /* background: color-mix(in srgb, var(--button-focus) 50%, transparent); */
+    background-color: var(--button-focus);
+    /* color: var(--accent); */
   }
 `;

@@ -92,13 +92,16 @@ export const colorPalette = {
   border: '#d8cfbf',
   accent: '#bc6c38',
   accentSelected: '#8e3f4431',
+  lightSelected: '#ffffffa6',
+  darkBg: '#4e222576',
+  darkSelected: '#311617',
   borderGray: '#d8cfbf',
   divider: '#d8cfbf',
   cardShadow: '0 4px 12px rgba(0,0,0,0.08)',
 
   homeTextDark: '#f4eadc',
   homeTextLight: '#2e2119',
-  actionDark: 'rgba(120, 52, 57, 0.92)',
+  actionDark: '#4e2225',
   actionDarkHover: 'rgba(142, 63, 68, 0.98)',
   actionBorderDark: 'rgba(225, 153, 143, 0.62)',
 
