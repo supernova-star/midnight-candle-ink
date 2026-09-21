@@ -41,7 +41,7 @@ export const stories: StoryMetadata[] = [
         id: 'chapter-2-68qw4u',
         title: 'The Figure',
         readTime: '4 min',
-        isAvailable: false,
+        isAvailable: true,
         markdownUrl: new URL('./the-photograph/the-figure.md', import.meta.url)
           .href,
       },
