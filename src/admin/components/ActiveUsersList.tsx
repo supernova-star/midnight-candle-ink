@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { AlertTriangle, RefreshCw, Trash2 } from 'lucide-react';
+
 import { deleteUser, getUsers, User, UsersResponse } from '@/hooks/activeUsers';
+
 import { Typography } from '@/components/uiComponents/typography/Typography';
 import { Button } from '@/components/uiComponents/button/Button';
 import { Modal } from '@/components/uiComponents/modal/Modal';
-import { colorPalette } from '@/theme/colors';
+
 import {
   ColumnFlexContainer,
   RowFlexContainer,
 } from '@/components/uiComponents/container/Container';
 
-const formatCreatedAt = (createdAt: string) =>
+const formatCreatedAt = (createdAt: string): string =>
   new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
     timeStyle: 'short',
@@ -22,29 +24,39 @@ export const ActiveUsersList: React.FC = () => {
     totalUsers: 0,
     activeUsers: 0,
   });
+
+  const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
   const [deletingBrowserId, setDeletingBrowserId] = useState<string | null>(
     null,
   );
+
   const [userPendingDeletion, setUserPendingDeletion] = useState<User | null>(
     null,
   );
+
   const [errorMessage, setErrorMessage] = useState('');
 
-  const loadUsers = async () => {
+  const loadUsers = async (): Promise<void> => {
     setIsRefreshing(true);
     setErrorMessage('');
+
     try {
       setUserData(await getUsers());
     } finally {
+      setIsLoading(false);
       setIsRefreshing(false);
     }
   };
 
-  const handleDelete = async () => {
-    if (!userPendingDeletion) return;
+  const handleDelete = async (): Promise<void> => {
+    if (!userPendingDeletion) {
+      return;
+    }
 
     const browserId = userPendingDeletion.browser_id;
+
     setDeletingBrowserId(browserId);
     setErrorMessage('');
 
@@ -65,153 +77,379 @@ export const ActiveUsersList: React.FC = () => {
 
   return (
     <ColumnFlexContainer
-      gap={[3]}
-      padding={[5, 0]}
+      gap={[4]}
+      padding={[4, 0]}
       flex={1}
       minHeight={[0]}
-      sx={{ minWidth: 0 }}
+      sx={{
+        minWidth: 0,
+      }}
     >
-      <RowFlexContainer alignItems="center" justifyContent="between" gap={[3]}>
+      {/* Page heading */}
+      <RowFlexContainer
+        alignItems="center"
+        justifyContent="between"
+        gap={[3]}
+        sx={{
+          '@media (max-width: 600px)': {
+            alignItems: 'flex-start',
+          },
+        }}
+      >
         <ColumnFlexContainer gap={[1]}>
-          <Typography color="adminDarkBrown" variant="h5" weight="semiBold">
+          <Typography
+            color="var(--admin-text-primary)"
+            variant="h5"
+            weight="semiBold"
+          >
             Visitors
           </Typography>
-          <Typography color="adminMuted" variant="body2">
+
+          <Typography color="var(--admin-text-muted)" variant="body2">
             {userData.activeUsers} active · {userData.totalUsers} total
           </Typography>
         </ColumnFlexContainer>
+
         <Button
           text={isRefreshing ? 'Refreshing...' : 'Refresh'}
           size="small"
           variant="contained"
-          iconOptions={{ icon: RefreshCw, iconColor: 'adminDarkBrown' }}
-          textOptions={{ textColor: 'adminDarkBrown', textWeight: 'bold' }}
-          buttonStyles={{ bgColor: 'adminYellow', borderRadius: [3] }}
+          iconOptions={{
+            icon: RefreshCw,
+            iconColor: 'var(--admin-button-primary-text)',
+          }}
+          textOptions={{
+            textColor: 'var(--admin-button-primary-text)',
+            textWeight: 'bold',
+          }}
+          buttonStyles={{
+            bgColor: 'var(--admin-button-primary)',
+            borderRadius: [2],
+          }}
           disabled={isRefreshing}
-          onClick={loadUsers}
+          onClick={() => void loadUsers()}
+          sx={{
+            flexShrink: 0,
+            '&:hover': {
+              backgroundColor: 'var(--admin-button-primary-hover)',
+            },
+          }}
         />
       </RowFlexContainer>
 
       {errorMessage && (
-        <Typography color="adminDanger" variant="body2">
+        <Typography color="var(--admin-danger)" variant="body2">
           {errorMessage}
         </Typography>
       )}
 
+      {/* Visitors table */}
       <ColumnFlexContainer
-        gap={[2]}
         flex={1}
         minHeight={[0]}
         overflow="auto"
-        padding={[0, 1, 4, 0]}
         sx={{
           minWidth: 0,
           scrollbarGutter: 'stable',
+          border: '1px solid var(--admin-border)',
+          borderRadius: '12px',
+          backgroundColor: 'var(--admin-surface)',
+          overflowX: 'auto',
         }}
       >
-        {userData.users.length === 0 ? (
-          <Typography color="adminMuted">No visitors yet.</Typography>
+        {isLoading ? (
+          <ColumnFlexContainer
+            flex={1}
+            alignItems="center"
+            justifyContent="center"
+            padding={[6]}
+          >
+            <Typography color="var(--admin-text-muted)" variant="body2">
+              Loading visitors...
+            </Typography>
+          </ColumnFlexContainer>
+        ) : userData.users.length === 0 ? (
+          <ColumnFlexContainer
+            padding={[6]}
+            alignItems="center"
+            justifyContent="center"
+            flex={1}
+          >
+            <Typography color="var(--admin-text-muted)" variant="body2">
+              No visitors yet.
+            </Typography>
+          </ColumnFlexContainer>
         ) : (
-          userData.users.map((user) => (
-            <RowFlexContainer
-              key={user.browser_id}
-              alignItems="center"
-              justifyContent="between"
-              gap={[3]}
-              padding={[3]}
-              backgroundColor="adminBackground"
-              borderRadius={[3]}
-              sx={{
-                border: '1px solid #e7dbcd',
-                boxShadow: '0 4px 12px rgba(86, 59, 39, 0.06)',
+          <table
+            style={{
+              width: '100%',
+              minWidth: 680,
+              borderCollapse: 'collapse',
+              tableLayout: 'fixed',
+            }}
+          >
+            <colgroup>
+              <col style={{ width: '48%' }} />
+              <col style={{ width: '25%' }} />
+              <col style={{ width: '20%' }} />
+              <col style={{ width: '7%' }} />
+            </colgroup>
+
+            <thead
+              style={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 2,
               }}
             >
-              <ColumnFlexContainer gap={[1]} minWidth={[0]} flex={1}>
-                <Typography
-                  color="adminDarkBrown"
-                  weight="semiBold"
-                  sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-                >
-                  {user.browser_id}
-                </Typography>
-                <Typography color="adminMuted" variant="caption">
-                  Created {formatCreatedAt(user.created_at)}
-                </Typography>
-              </ColumnFlexContainer>
-              <Typography
-                color={user.is_active ? 'adminDarkBrown' : 'adminMuted'}
-                weight="semiBold"
-                variant="caption"
+              <tr
+                style={{
+                  backgroundColor: 'var(--admin-table-header)',
+                  borderBottom: '1px solid var(--admin-border-strong)',
+                }}
               >
-                {user.is_active ? 'ACTIVE' : 'INACTIVE'}
-              </Typography>
-              <Button
-                text=""
-                variant="text"
-                size="small"
-                iconOptions={{ icon: Trash2, iconColor: 'adminDanger' }}
-                aria-label={`Delete visitor ${user.browser_id}`}
-                title="Delete visitor"
-                disabled={deletingBrowserId === user.browser_id}
-                buttonStyles={{ width: 'hugContents' }}
-                sx={{ minWidth: 40, px: 1 }}
-                onClick={() => setUserPendingDeletion(user)}
-              />
-            </RowFlexContainer>
-          ))
+                <th style={headerCellStyle}>VISITOR</th>
+
+                <th style={headerCellStyle}>CREATED AT</th>
+
+                <th style={headerCellStyle}>STATUS</th>
+
+                <th
+                  style={{
+                    ...headerCellStyle,
+                    textAlign: 'center',
+                  }}
+                >
+                  {' '}
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {userData.users.map((user) => (
+                <tr
+                  key={user.browser_id}
+                  style={{
+                    borderBottom: '1px solid var(--admin-border)',
+                  }}
+                >
+                  {/* Visitor */}
+                  <td style={bodyCellStyle}>
+                    <ColumnFlexContainer
+                      gap={[1]}
+                      sx={{
+                        minWidth: 0,
+                      }}
+                    >
+                      <Typography
+                        color="var(--admin-text-primary)"
+                        weight="semiBold"
+                        sx={{
+                          fontSize: 15,
+                        }}
+                      >
+                        {user.user_name || 'Anonymous'}
+                      </Typography>
+
+                      <Typography
+                        color="var(--admin-text-muted)"
+                        variant="caption"
+                        title={user.browser_id}
+                        sx={{
+                          fontSize: 11,
+                          lineHeight: 1.4,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {user.browser_id}
+                      </Typography>
+                    </ColumnFlexContainer>
+                  </td>
+
+                  {/* Created */}
+                  <td style={bodyCellStyle}>
+                    <ColumnFlexContainer gap={[0]}>
+                      <Typography
+                        color="var(--admin-text-muted)"
+                        variant="caption"
+                        sx={{
+                          fontSize: 11,
+                        }}
+                      >
+                        Joined
+                      </Typography>
+
+                      <Typography
+                        color="var(--admin-text-secondary)"
+                        variant="body2"
+                      >
+                        {formatCreatedAt(user.created_at)}
+                      </Typography>
+                    </ColumnFlexContainer>
+                  </td>
+
+                  {/* Status */}
+                  <td style={bodyCellStyle}>
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 7,
+                        padding: '6px 11px',
+                        borderRadius: 999,
+                        backgroundColor: user.is_active
+                          ? 'var(--admin-success-background)'
+                          : 'var(--admin-danger-background)',
+                        border: `1px solid ${
+                          user.is_active
+                            ? 'var(--admin-success-border)'
+                            : 'var(--admin-danger-border)'
+                        }`,
+                        color: user.is_active
+                          ? 'var(--admin-success-text)'
+                          : 'var(--admin-danger-text)',
+                        fontSize: 11,
+                        fontWeight: 700,
+                        letterSpacing: '0.05em',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: 6,
+                          height: 6,
+                          flexShrink: 0,
+                          borderRadius: '50%',
+                          backgroundColor: user.is_active
+                            ? 'var(--admin-success)'
+                            : 'var(--admin-danger)',
+                        }}
+                      />
+
+                      {user.is_active ? 'ACTIVE' : 'INACTIVE'}
+                    </span>
+                  </td>
+
+                  {/* Delete */}
+                  <td
+                    style={{
+                      ...bodyCellStyle,
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Button
+                      text=""
+                      variant="text"
+                      size="small"
+                      iconOptions={{
+                        icon: Trash2,
+                        iconColor: 'var(--admin-danger)',
+                      }}
+                      aria-label={`Delete visitor ${
+                        user.user_name || user.browser_id
+                      }`}
+                      title="Delete visitor"
+                      disabled={deletingBrowserId === user.browser_id}
+                      buttonStyles={{
+                        width: 'hugContents',
+                      }}
+                      sx={{
+                        minWidth: 40,
+                        px: 1,
+                      }}
+                      onClick={() => setUserPendingDeletion(user)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </ColumnFlexContainer>
 
+      {/* Delete modal */}
       <Modal
         open={Boolean(userPendingDeletion)}
         onClose={() => setUserPendingDeletion(null)}
         aria-labelledby="delete-visitor-title"
         aria-describedby="delete-visitor-description"
         fullScreenOnMobile={false}
-        contentStyle={{ width: 'min(420px, calc(100vw - 32px))' }}
+        contentStyle={{
+          width: 'min(420px, calc(100vw - 32px))',
+        }}
       >
         <ColumnFlexContainer
           gap={[3]}
           padding={[6]}
-          backgroundColor="adminSurface"
+          backgroundColor="var(--admin-surface)"
           borderRadius={[3]}
         >
           <RowFlexContainer alignItems="center" gap={[2]}>
-            <AlertTriangle size={22} color={colorPalette.adminDanger} />
+            <AlertTriangle size={22} color="var(--admin-danger)" />
+
             <Typography
               id="delete-visitor-title"
               variant="h6"
-              color="adminDarkBrown"
+              color="var(--admin-text-primary)"
               weight="bold"
             >
               Delete visitor?
             </Typography>
           </RowFlexContainer>
-          <Typography id="delete-visitor-description" color="adminMuted">
+
+          <Typography
+            id="delete-visitor-description"
+            color="var(--admin-text-muted)"
+          >
             This will permanently remove this browser from Supabase.
           </Typography>
-          <Typography
-            color="adminDarkBrown"
-            weight="semiBold"
-            sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-          >
-            {userPendingDeletion?.browser_id}
-          </Typography>
+
+          <ColumnFlexContainer gap={[1]}>
+            <Typography color="var(--admin-text-primary)" weight="semiBold">
+              {userPendingDeletion?.user_name || 'Anonymous'}
+            </Typography>
+
+            <Typography
+              color="var(--admin-text-muted)"
+              variant="caption"
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {userPendingDeletion?.browser_id}
+            </Typography>
+          </ColumnFlexContainer>
+
           <RowFlexContainer justifyContent="end" gap={[2]}>
             <Button
               text="Cancel"
               variant="text"
               size="small"
-              textOptions={{ textColor: 'adminDarkBrown' }}
+              textOptions={{
+                textColor: 'var(--admin-text-primary)',
+              }}
               onClick={() => setUserPendingDeletion(null)}
               disabled={Boolean(deletingBrowserId)}
             />
+
             <Button
               text={deletingBrowserId ? 'Deleting...' : 'Delete visitor'}
               size="small"
               variant="contained"
-              iconOptions={{ icon: Trash2, iconColor: 'white' }}
-              buttonStyles={{ bgColor: 'adminDanger', borderRadius: [2] }}
+              iconOptions={{
+                icon: Trash2,
+                iconColor: 'var(--admin-button-primary-text)',
+              }}
+              textOptions={{
+                textColor: 'var(--admin-button-primary-text)',
+              }}
+              buttonStyles={{
+                bgColor: 'var(--admin-danger)',
+                borderRadius: [2],
+              }}
               onClick={() => void handleDelete()}
               disabled={Boolean(deletingBrowserId)}
             />
@@ -220,4 +458,19 @@ export const ActiveUsersList: React.FC = () => {
       </Modal>
     </ColumnFlexContainer>
   );
+};
+
+const headerCellStyle: React.CSSProperties = {
+  padding: '12px 12px',
+  textAlign: 'left',
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: '0.08em',
+  color: 'var(--admin-text-secondary)',
+  backgroundColor: 'var(--admin-table-header)',
+};
+
+const bodyCellStyle: React.CSSProperties = {
+  padding: '12px 12px',
+  verticalAlign: 'middle',
 };

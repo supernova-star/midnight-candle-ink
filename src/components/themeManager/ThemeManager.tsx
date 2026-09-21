@@ -27,14 +27,55 @@ const getInitialMode = (): ColorMode =>
   window.localStorage.getItem('color-mode') === 'light' ? 'light' : 'dark';
 
 const sharedVariables = {
+  // Existing
   '--home-text': colorPalette.homeTextDark,
   '--action-background': colorPalette.actionDark,
   '--action-background-hover': colorPalette.actionDarkHover,
   '--action-border': colorPalette.actionBorderDark,
   '--action-text': colorPalette.homeTextDark,
-  '--admin-brown': colorPalette.adminBrown,
-  '--admin-dark-brown': colorPalette.adminDarkBrown,
-  '--admin-muted': colorPalette.adminMuted,
+
+  // Admin
+  '--admin-background': colorPalette.adminColors.background,
+  '--admin-surface': colorPalette.adminColors.surface,
+  '--admin-surface-hover': colorPalette.adminColors.surfaceHover,
+
+  '--admin-text-primary': colorPalette.adminColors.textPrimary,
+  '--admin-text-secondary': colorPalette.adminColors.textSecondary,
+  '--admin-text-muted': colorPalette.adminColors.textMuted,
+
+  '--admin-brand': colorPalette.adminColors.brand,
+  '--admin-brand-dark': colorPalette.adminColors.brandDark,
+  '--admin-accent': colorPalette.adminColors.accent,
+  '--admin-accent-hover': colorPalette.adminColors.accentHover,
+  '--admin-accent-soft': colorPalette.adminColors.accentSoft,
+
+  '--admin-border': colorPalette.adminColors.border,
+  '--admin-border-strong': colorPalette.adminColors.borderStrong,
+
+  '--admin-button-primary': colorPalette.adminColors.buttonPrimary,
+  '--admin-button-primary-hover': colorPalette.adminColors.buttonPrimaryHover,
+  '--admin-button-primary-text': colorPalette.adminColors.buttonPrimaryText,
+
+  '--admin-icon': colorPalette.adminColors.icon,
+  '--admin-icon-muted': colorPalette.adminColors.iconMuted,
+  '--admin-icon-background': colorPalette.adminColors.iconBackground,
+
+  '--admin-success': colorPalette.adminColors.success,
+  '--admin-success-background': colorPalette.adminColors.successBackground,
+  '--admin-success-border': colorPalette.adminColors.successBorder,
+  '--admin-success-text': colorPalette.adminColors.successText,
+
+  '--admin-danger': colorPalette.adminColors.danger,
+  '--admin-danger-background': colorPalette.adminColors.dangerBackground,
+  '--admin-danger-border': colorPalette.adminColors.dangerBorder,
+  '--admin-danger-text': colorPalette.adminColors.dangerText,
+
+  '--admin-table-header': colorPalette.adminColors.tableHeader,
+  '--admin-table-row': colorPalette.adminColors.tableRow,
+  '--admin-table-row-hover': colorPalette.adminColors.tableRowHover,
+
+  '--admin-feedback-background': colorPalette.adminColors.feedbackBackground,
+  '--admin-feedback-border': colorPalette.adminColors.feedbackBorder,
 } as const;
 
 const getModeVariables = (mode: ColorMode) => {

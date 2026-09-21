@@ -18,7 +18,10 @@ const getSupabaseAdmin = () => {
   });
 };
 
-const getCookie = (cookieHeader: string | undefined, name: string) => {
+const getCookie = (
+  cookieHeader: string | undefined,
+  name: string,
+): string | null => {
   const matchingCookie = cookieHeader
     ?.split(';')
     .map((cookie) => cookie.trim())
@@ -29,8 +32,10 @@ const getCookie = (cookieHeader: string | undefined, name: string) => {
     : null;
 };
 
-const isAdminSession = (token: string | null) => {
-  if (!token) return false;
+const isAdminSession = (token: string | null): boolean => {
+  if (!token) {
+    return false;
+  }
 
   const [encodedPayload, signature] = token.split('.');
   const secret = process.env.SESSION_SECRET;
@@ -72,7 +77,7 @@ const isAdminSession = (token: string | null) => {
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'GET' && req.method !== 'DELETE') {
+  if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
@@ -88,58 +93,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const supabaseAdmin = getSupabaseAdmin();
 
-    if (req.method === 'DELETE') {
-      const browserId = Array.isArray(req.query.browser_id)
-        ? req.query.browser_id[0]
-        : req.query.browser_id;
-
-      if (!browserId) {
-        return res.status(400).json({ error: 'browser_id is required' });
-      }
-
-      const { error } = await supabaseAdmin
-        .from('storybook_users')
-        .delete()
-        .eq('browser_id', browserId);
-
-      if (error) {
-        return res.status(500).json({ error: 'Unable to delete user' });
-      }
-
-      return res.status(204).end();
-    }
-
     const { data, error } = await supabaseAdmin
-      .from('storybook_users')
-      .select('browser_id, created_at, last_seen_at, username')
+      .from('storybook_feedback')
+      .select('browser_id, username, feedback, created_at')
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Failed to load storybook users:', error);
+      console.error('Failed to load storybook feedback:', error);
 
       return res.status(500).json({
-        error: 'Unable to load users',
+        error: 'Unable to load feedback',
       });
     }
 
-    const ACTIVE_WINDOW_MS = 2 * 60 * 1000;
-
-    const users = (data ?? []).map((user) => ({
-      ...user,
-      user_name: user.username,
-      is_active:
-        Date.now() - new Date(user.last_seen_at).getTime() <= ACTIVE_WINDOW_MS,
-    }));
-
-    const activeUsers = users.filter((user) => user.is_active).length;
-
     return res.status(200).json({
-      users,
-      totalUsers: users.length,
-      activeUsers,
+      feedback: data ?? [],
+      totalFeedback: data?.length ?? 0,
     });
   } catch (error) {
-    console.error('Admin users API error:', error);
+    console.error('Admin feedback API error:', error);
 
     return res.status(500).json({
       error: 'Something went wrong',

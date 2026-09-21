@@ -3,6 +3,7 @@ export interface User {
   created_at: string;
   last_seen_at: string;
   is_active: boolean;
+  user_name: string | null;
 }
 
 export interface UsersResponse {
