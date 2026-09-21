@@ -80,7 +80,7 @@ export const StoryDetail: React.FC = () => {
           textOptions={{
             textColor: 'var(--button-primary-text)',
             textVariant: 'caption',
-            textWeight: 'regular',
+            textWeight: 'semiBold',
           }}
           buttonStyles={{
             bgColor: 'var(--button-primary-bg)',

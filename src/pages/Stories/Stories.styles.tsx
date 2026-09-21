@@ -15,6 +15,11 @@ export const StoriesContent = styled(ColumnFlexContainer)`
   padding: ${({ theme }) => theme.spacing(8, 0, 8)};
   overflow: hidden;
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}px) {
+    width: calc(100% - ${({ theme }) => theme.spacing(12)});
+    padding: ${({ theme }) => theme.spacing(4, 0)};
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
     width: calc(100% - ${({ theme }) => theme.spacing(8)});
     padding: ${({ theme }) => theme.spacing(4, 0)};
@@ -51,7 +56,7 @@ export const StoryGrid = styled(Container)`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {

@@ -39,6 +39,7 @@ const sharedVariables = {
 
 const getModeVariables = (mode: ColorMode) => {
   const palette = modePalettes[mode];
+  const feedback = colorPalette.feedbackColors[mode];
 
   return {
     '--background': palette.background,
@@ -49,6 +50,7 @@ const getModeVariables = (mode: ColorMode) => {
     '--border': palette.border,
     '--button': palette.button,
     '--accent': palette.accent,
+    '--accent-selected': colorPalette.accentSelected,
 
     '--button-primary-bg': palette.buttonPrimaryBG,
     '--button-primary-text': palette.buttonPrimaryText,
@@ -56,6 +58,17 @@ const getModeVariables = (mode: ColorMode) => {
     '--button-disabled-text': palette.buttonDisabledText,
     '--button-hover-bg': palette.buttonHoverBG,
     '--button-hover-text': palette.buttonHoverText,
+
+    // Feedback
+    '--feedback-success-background': feedback.success.background,
+    '--feedback-success-border': feedback.success.border,
+    '--feedback-success-text': feedback.success.text,
+    '--feedback-success-icon': feedback.success.icon,
+
+    '--feedback-error-background': feedback.error.background,
+    '--feedback-error-border': feedback.error.border,
+    '--feedback-error-text': feedback.error.text,
+    '--feedback-error-icon': feedback.error.icon,
 
     '--home-text-shadow':
       mode === 'dark'

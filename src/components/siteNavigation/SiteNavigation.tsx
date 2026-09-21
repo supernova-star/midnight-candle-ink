@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
   BookOpen,
   Home as HomeIcon,
@@ -6,6 +6,7 @@ import {
   Menu,
   Moon,
   Sun,
+  User,
 } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { Drawer } from '@/components/uiComponents/drawer/Drawer';
@@ -34,7 +35,49 @@ import {
   SiteHeader,
 } from './SiteNavigation.styles';
 
-export const SiteNavigation: React.FC = () => {
+type SiteNavigationItemProps = {
+  pathname: string;
+  navigationItemURL: string;
+  navigationItemName: string;
+  icon: React.ReactNode;
+  isDesktop: boolean;
+  onClick?: () => void;
+};
+
+const SiteNavigationItem: FC<SiteNavigationItemProps> = ({
+  pathname,
+  navigationItemURL,
+  navigationItemName,
+  icon,
+  isDesktop,
+  onClick,
+}) => {
+  const navigateTo =
+    navigationItemURL === 'home' ? '/' : `/${navigationItemURL}`;
+
+  return !isDesktop ? (
+    <DrawerNavigationItem
+      to={navigateTo}
+      $active={pathname === navigateTo}
+      aria-current={pathname === navigateTo ? 'page' : undefined}
+      onClick={onClick}
+    >
+      {icon}
+      {navigationItemName}
+    </DrawerNavigationItem>
+  ) : (
+    <NavigationItem
+      to={navigateTo}
+      $active={pathname === navigateTo}
+      aria-current={pathname === navigateTo ? 'page' : undefined}
+    >
+      {icon}
+      <NavigationLabel>{navigationItemName}</NavigationLabel>
+    </NavigationItem>
+  );
+};
+
+export const SiteNavigation: FC = () => {
   const { pathname } = useLocation();
   const { mode, toggleMode } = useThemeMode();
   const isMobile = useResponsive();
@@ -99,35 +142,34 @@ export const SiteNavigation: React.FC = () => {
                   <span>Midnight</span>Candle &amp; Ink
                 </DrawerBrandName>
               </DrawerBrand>
-              <DrawerNavigationItem
-                to="/"
-                $active={pathname === '/'}
-                aria-current={pathname === '/' ? 'page' : undefined}
-                onClick={closeMenu}
-              >
-                <HomeIcon aria-hidden="true" />
-                Home
-              </DrawerNavigationItem>
-              <DrawerNavigationItem
-                to="/stories"
-                $active={pathname.startsWith('/stories')}
-                aria-current={
-                  pathname.startsWith('/stories') ? 'page' : undefined
-                }
-                onClick={closeMenu}
-              >
-                <BookOpen aria-hidden="true" />
-                Stories
-              </DrawerNavigationItem>
-              <DrawerNavigationItem
-                to="/about"
-                $active={pathname === '/about'}
-                aria-current={pathname === '/about' ? 'page' : undefined}
-                onClick={closeMenu}
-              >
-                <Info aria-hidden="true" />
-                About
-              </DrawerNavigationItem>
+              <SiteNavigationItem
+                pathname={pathname}
+                navigationItemName="Home"
+                navigationItemURL="home"
+                icon={<HomeIcon aria-hidden="true" />}
+                isDesktop={false}
+              />
+              <SiteNavigationItem
+                pathname={pathname}
+                navigationItemName="Stories"
+                navigationItemURL="stories"
+                icon={<BookOpen aria-hidden="true" />}
+                isDesktop={false}
+              />
+              <SiteNavigationItem
+                pathname={pathname}
+                navigationItemName="About"
+                navigationItemURL="about"
+                icon={<Info aria-hidden="true" />}
+                isDesktop={false}
+              />
+              <SiteNavigationItem
+                pathname={pathname}
+                navigationItemName="Profile"
+                navigationItemURL="profile"
+                icon={<User aria-hidden="true" />}
+                isDesktop={false}
+              />
               <DrawerQuote>
                 <span>Stories for</span>
                 <span>quieter days.</span>
@@ -138,30 +180,34 @@ export const SiteNavigation: React.FC = () => {
         </>
       ) : (
         <Navigation element="nav" aria-label="Primary navigation">
-          <NavigationItem
-            to="/"
-            $active={pathname === '/'}
-            aria-current={pathname === '/' ? 'page' : undefined}
-          >
-            <HomeIcon aria-hidden="true" />
-            <NavigationLabel>Home</NavigationLabel>
-          </NavigationItem>
-          <NavigationItem
-            to="/stories"
-            $active={pathname.startsWith('/stories')}
-            aria-current={pathname.startsWith('/stories') ? 'page' : undefined}
-          >
-            <BookOpen aria-hidden="true" />
-            <NavigationLabel>Stories</NavigationLabel>
-          </NavigationItem>
-          <NavigationItem
-            to="/about"
-            $active={pathname === '/about'}
-            aria-current={pathname === '/about' ? 'page' : undefined}
-          >
-            <Info aria-hidden="true" />
-            <NavigationLabel>About</NavigationLabel>
-          </NavigationItem>
+          <SiteNavigationItem
+            pathname={pathname}
+            navigationItemName="Home"
+            navigationItemURL="home"
+            icon={<HomeIcon aria-hidden="true" />}
+            isDesktop
+          />
+          <SiteNavigationItem
+            pathname={pathname}
+            navigationItemName="Stories"
+            navigationItemURL="stories"
+            icon={<BookOpen aria-hidden="true" />}
+            isDesktop
+          />
+          <SiteNavigationItem
+            pathname={pathname}
+            navigationItemName="About"
+            navigationItemURL="about"
+            icon={<Info aria-hidden="true" />}
+            isDesktop
+          />
+          <SiteNavigationItem
+            pathname={pathname}
+            navigationItemName="Profile"
+            navigationItemURL="profile"
+            icon={<User aria-hidden="true" />}
+            isDesktop
+          />
           {themeButton}
         </Navigation>
       )}

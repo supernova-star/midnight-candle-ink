@@ -16,6 +16,11 @@ export const SiteHeader = styled(RowFlexContainer)`
   margin: 0 auto;
   padding-top: ${({ theme }) => theme.spacing(9.5)};
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}px) {
+    width: calc(100% - ${({ theme }) => theme.spacing(10)});
+    padding-top: ${({ theme }) => theme.spacing(5)};
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}px) {
     width: calc(100% - ${({ theme }) => theme.spacing(8)});
     padding-top: ${({ theme }) => theme.spacing(5)};

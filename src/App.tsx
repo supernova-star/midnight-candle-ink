@@ -11,6 +11,7 @@ import { About } from './pages/About/About';
 import { Stories } from './pages/Stories/Stories';
 import { StoryDetail } from './pages/StoryDetail/StoryDetail';
 import { Reader } from './pages/Reader/Reader';
+import { Profile } from './pages/Profile/Profile';
 
 export const App: React.FC = () => {
   useEffect(() => {
@@ -55,6 +56,8 @@ export const App: React.FC = () => {
         />
         <Route path="/stories/:storyId" element={<StoryDetail />} />
         <Route path="/about" element={<About />} />
+
+        <Route path="/profile" element={<Profile />} />
 
         <Route path="/adminsupa" element={<AdminLogin />} />
         <Route path="/adminsupa/error" element={<AdminError />} />

@@ -3,13 +3,13 @@ import { SiteNavigation } from '@/components/siteNavigation/SiteNavigation';
 import { StoryCard } from '@/components/storyCard/StoryCard';
 import { stories } from '@/constants/stories';
 import { Typography } from '@/components/uiComponents/typography/Typography';
-import theme from '@/theme/theme';
 import { StoriesContent, StoryGrid } from './Stories.styles';
 import { ColumnFlexContainer } from '@/components/uiComponents/container/Container';
 import { useResponsive } from '@/hooks/useResponsive';
 
 export const Stories: React.FC = () => {
   const isMobile = useResponsive();
+  const isTablet = useResponsive('tablet');
   return (
     <ColumnFlexContainer
       element="main"
@@ -29,7 +29,7 @@ export const Stories: React.FC = () => {
         >
           <Typography
             component="h1"
-            variant={isMobile ? 'h5' : 'h3'}
+            variant={isMobile ? 'h5' : isTablet ? 'h4' : 'h3'}
             weight="semiBold"
             color="var(--text-primary)"
             textAlign="center"
