@@ -111,7 +111,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const { data, error } = await supabaseAdmin
       .from('storybook_users')
-      .select('browser_id, created_at, last_seen_at, username')
+      .select(
+        'browser_id, created_at, last_seen_at, username, city, region, country',
+      )
       .order('created_at', { ascending: false });
 
     if (error) {

@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { AlertTriangle, RefreshCw, Trash2 } from 'lucide-react';
+
+import {
+  AlertTriangle,
+  Calendar,
+  MapPin,
+  RefreshCw,
+  Trash2,
+} from 'lucide-react';
 
 import { deleteUser, getUsers, User, UsersResponse } from '@/hooks/activeUsers';
 
@@ -12,11 +19,41 @@ import {
   RowFlexContainer,
 } from '@/components/uiComponents/container/Container';
 
-const formatCreatedAt = (createdAt: string): string =>
+import { UserDetailsModal } from './UserDetailsModal';
+
+const formatDate = (date: string): string =>
   new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
     timeStyle: 'short',
-  }).format(new Date(createdAt));
+  }).format(new Date(date));
+
+const formatRelativeTime = (date: string): string => {
+  const diff = Date.now() - new Date(date).getTime();
+
+  const minutes = Math.floor(diff / (1000 * 60));
+
+  if (minutes < 1) {
+    return 'Just now';
+  }
+
+  if (minutes < 60) {
+    return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+
+  if (hours < 24) {
+    return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+  }
+
+  const days = Math.floor(hours / 24);
+
+  return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+};
+
+const getLocation = (user: User): string => {
+  return [user.city, user.region, user.country].filter(Boolean).join(', ');
+};
 
 export const ActiveUsersList: React.FC = () => {
   const [userData, setUserData] = useState<UsersResponse>({
@@ -35,6 +72,8 @@ export const ActiveUsersList: React.FC = () => {
   const [userPendingDeletion, setUserPendingDeletion] = useState<User | null>(
     null,
   );
+
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -69,30 +108,6 @@ export const ActiveUsersList: React.FC = () => {
       setDeletingBrowserId(null);
       setUserPendingDeletion(null);
     }
-  };
-
-  const formatRelativeTime = (date: string): string => {
-    const diff = Date.now() - new Date(date).getTime();
-
-    const minutes = Math.floor(diff / (1000 * 60));
-
-    if (minutes < 1) {
-      return 'Just now';
-    }
-
-    if (minutes < 60) {
-      return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
-    }
-
-    const hours = Math.floor(minutes / 60);
-
-    if (hours < 24) {
-      return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
-    }
-
-    const days = Math.floor(hours / 24);
-
-    return `${days} ${days === 1 ? 'day' : 'days'} ago`;
   };
 
   useEffect(() => {
@@ -213,10 +228,10 @@ export const ActiveUsersList: React.FC = () => {
             }}
           >
             <colgroup>
-              <col style={{ width: '34%' }} />
-              <col style={{ width: '21%' }} />
+              <col style={{ width: '31%' }} />
+              <col style={{ width: '25%' }} />
               <col style={{ width: '24%' }} />
-              <col style={{ width: '15%' }} />
+              <col style={{ width: '14%' }} />
               <col style={{ width: '6%' }} />
             </colgroup>
 
@@ -235,9 +250,9 @@ export const ActiveUsersList: React.FC = () => {
               >
                 <th style={headerCellStyle}>VISITOR</th>
 
-                <th style={headerCellStyle}>CREATED AT</th>
+                <th style={headerCellStyle}>LOCATION</th>
 
-                <th style={headerCellStyle}>LAST SEEN AT</th>
+                <th style={headerCellStyle}>LAST SEEN</th>
 
                 <th style={headerCellStyle}>STATUS</th>
 
@@ -253,170 +268,221 @@ export const ActiveUsersList: React.FC = () => {
             </thead>
 
             <tbody>
-              {userData.users.map((user) => (
-                <tr
-                  key={user.browser_id}
-                  style={{
-                    borderBottom: '1px solid var(--admin-border)',
-                  }}
-                >
-                  {/* Visitor */}
-                  <td style={bodyCellStyle}>
-                    <ColumnFlexContainer
-                      gap={[1]}
-                      sx={{
-                        minWidth: 0,
-                      }}
-                    >
-                      <Typography
-                        color="var(--admin-text-primary)"
-                        weight="semiBold"
+              {userData.users.map((user) => {
+                const location = getLocation(user);
+
+                return (
+                  <tr
+                    key={user.browser_id}
+                    onClick={() => setSelectedUser(user)}
+                    style={{
+                      borderBottom: '1px solid var(--admin-border)',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(event) => {
+                      event.currentTarget.style.backgroundColor =
+                        'var(--admin-surface-hover)';
+                    }}
+                    onMouseLeave={(event) => {
+                      event.currentTarget.style.backgroundColor = 'transparent';
+                    }}
+                  >
+                    {/* Visitor */}
+                    <td style={bodyCellStyle}>
+                      <ColumnFlexContainer
+                        gap={[1]}
                         sx={{
-                          fontSize: 15,
+                          minWidth: 0,
                         }}
                       >
-                        {user.user_name || 'Anonymous'}
-                      </Typography>
+                        <Typography
+                          color="var(--admin-text-primary)"
+                          weight="semiBold"
+                          sx={{
+                            fontSize: 15,
+                          }}
+                        >
+                          {user.user_name || 'Anonymous'}
+                        </Typography>
 
-                      <Typography
-                        color="var(--admin-text-muted)"
-                        variant="caption"
-                        title={user.browser_id}
+                        <RowFlexContainer
+                          alignItems="center"
+                          gap={[1]}
+                          sx={{
+                            minWidth: 0,
+                          }}
+                        >
+                          <Calendar
+                            size={14}
+                            color="var(--admin-text-muted)"
+                            style={{
+                              flexShrink: 0,
+                            }}
+                          />
+
+                          <Typography
+                            color="var(--admin-text-muted)"
+                            variant="caption"
+                            sx={{
+                              fontSize: 11,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            Joined {formatDate(user.created_at)}
+                          </Typography>
+                        </RowFlexContainer>
+                      </ColumnFlexContainer>
+                    </td>
+
+                    {/* Location */}
+                    <td style={bodyCellStyle}>
+                      <RowFlexContainer
+                        alignItems="center"
+                        gap={[2]}
                         sx={{
+                          minWidth: 0,
+                        }}
+                      >
+                        <MapPin
+                          size={18}
+                          color="var(--admin-text-muted)"
+                          style={{
+                            flexShrink: 0,
+                          }}
+                        />
+
+                        <Typography
+                          color={
+                            location
+                              ? 'var(--admin-text-primary)'
+                              : 'var(--admin-text-muted)'
+                          }
+                          variant="body2"
+                          sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                          title={location || 'Location unavailable'}
+                        >
+                          {location || 'Location unavailable'}
+                        </Typography>
+                      </RowFlexContainer>
+                    </td>
+
+                    {/* Last Seen */}
+                    <td style={bodyCellStyle}>
+                      <ColumnFlexContainer gap={[0]}>
+                        <Typography
+                          color="var(--admin-text-primary)"
+                          variant="body2"
+                        >
+                          {formatRelativeTime(user.last_seen_at)}
+                        </Typography>
+
+                        <Typography
+                          color="var(--admin-text-muted)"
+                          variant="caption"
+                          sx={{
+                            fontSize: 11,
+                          }}
+                        >
+                          {formatDate(user.last_seen_at)}
+                        </Typography>
+                      </ColumnFlexContainer>
+                    </td>
+
+                    {/* Status */}
+                    <td style={bodyCellStyle}>
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 7,
+                          padding: '6px 11px',
+                          borderRadius: 999,
+                          backgroundColor: user.is_active
+                            ? 'var(--admin-success-background)'
+                            : 'var(--admin-danger-background)',
+                          border: `1px solid ${
+                            user.is_active
+                              ? 'var(--admin-success-border)'
+                              : 'var(--admin-danger-border)'
+                          }`,
+                          color: user.is_active
+                            ? 'var(--admin-success-text)'
+                            : 'var(--admin-danger-text)',
                           fontSize: 11,
-                          lineHeight: 1.4,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
+                          fontWeight: 700,
+                          letterSpacing: '0.05em',
                           whiteSpace: 'nowrap',
                         }}
                       >
-                        {user.browser_id}
-                      </Typography>
-                    </ColumnFlexContainer>
-                  </td>
+                        <span
+                          style={{
+                            width: 6,
+                            height: 6,
+                            flexShrink: 0,
+                            borderRadius: '50%',
+                            backgroundColor: user.is_active
+                              ? 'var(--admin-success)'
+                              : 'var(--admin-danger)',
+                          }}
+                        />
 
-                  {/* Created */}
-                  <td style={bodyCellStyle}>
-                    <ColumnFlexContainer gap={[0]}>
-                      <Typography
-                        color="var(--admin-text-muted)"
-                        variant="caption"
-                        sx={{
-                          fontSize: 11,
-                        }}
-                      >
-                        Joined
-                      </Typography>
+                        {user.is_active ? 'ACTIVE' : 'INACTIVE'}
+                      </span>
+                    </td>
 
-                      <Typography
-                        color="var(--admin-text-secondary)"
-                        variant="body2"
-                      >
-                        {formatCreatedAt(user.created_at)}
-                      </Typography>
-                    </ColumnFlexContainer>
-                  </td>
-
-                  {/* Last Seen */}
-                  <td style={bodyCellStyle}>
-                    <ColumnFlexContainer gap={[0]}>
-                      <Typography
-                        color="var(--admin-text-secondary)"
-                        variant="body2"
-                      >
-                        {formatCreatedAt(user.last_seen_at)}
-                      </Typography>
-
-                      <Typography
-                        color="var(--admin-text-muted)"
-                        variant="caption"
-                        sx={{
-                          fontSize: 11,
-                        }}
-                      >
-                        {formatRelativeTime(user.last_seen_at)}
-                      </Typography>
-                    </ColumnFlexContainer>
-                  </td>
-
-                  {/* Status */}
-                  <td style={bodyCellStyle}>
-                    <span
+                    {/* Delete */}
+                    <td
                       style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 7,
-                        padding: '6px 11px',
-                        borderRadius: 999,
-                        backgroundColor: user.is_active
-                          ? 'var(--admin-success-background)'
-                          : 'var(--admin-danger-background)',
-                        border: `1px solid ${
-                          user.is_active
-                            ? 'var(--admin-success-border)'
-                            : 'var(--admin-danger-border)'
-                        }`,
-                        color: user.is_active
-                          ? 'var(--admin-success-text)'
-                          : 'var(--admin-danger-text)',
-                        fontSize: 11,
-                        fontWeight: 700,
-                        letterSpacing: '0.05em',
-                        whiteSpace: 'nowrap',
+                        ...bodyCellStyle,
+                        textAlign: 'center',
                       }}
                     >
-                      <span
-                        style={{
-                          width: 6,
-                          height: 6,
-                          flexShrink: 0,
-                          borderRadius: '50%',
-                          backgroundColor: user.is_active
-                            ? 'var(--admin-success)'
-                            : 'var(--admin-danger)',
+                      <Button
+                        text=""
+                        variant="text"
+                        size="small"
+                        iconOptions={{
+                          icon: Trash2,
+                          iconColor: 'var(--admin-danger)',
+                        }}
+                        aria-label={`Delete visitor ${
+                          user.user_name || user.browser_id
+                        }`}
+                        title="Delete visitor"
+                        disabled={deletingBrowserId === user.browser_id}
+                        buttonStyles={{
+                          width: 'hugContents',
+                        }}
+                        sx={{
+                          minWidth: 40,
+                          px: 1,
+                        }}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setUserPendingDeletion(user);
                         }}
                       />
-
-                      {user.is_active ? 'ACTIVE' : 'INACTIVE'}
-                    </span>
-                  </td>
-
-                  {/* Delete */}
-                  <td
-                    style={{
-                      ...bodyCellStyle,
-                      textAlign: 'center',
-                    }}
-                  >
-                    <Button
-                      text=""
-                      variant="text"
-                      size="small"
-                      iconOptions={{
-                        icon: Trash2,
-                        iconColor: 'var(--admin-danger)',
-                      }}
-                      aria-label={`Delete visitor ${
-                        user.user_name || user.browser_id
-                      }`}
-                      title="Delete visitor"
-                      disabled={deletingBrowserId === user.browser_id}
-                      buttonStyles={{
-                        width: 'hugContents',
-                      }}
-                      sx={{
-                        minWidth: 40,
-                        px: 1,
-                      }}
-                      onClick={() => setUserPendingDeletion(user)}
-                    />
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}
       </ColumnFlexContainer>
+
+      {/* User details modal */}
+      <UserDetailsModal
+        user={selectedUser}
+        open={Boolean(selectedUser)}
+        onClose={() => setSelectedUser(null)}
+      />
 
       {/* Delete modal */}
       <Modal

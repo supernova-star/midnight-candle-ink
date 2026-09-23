@@ -4,6 +4,9 @@ export interface User {
   last_seen_at: string;
   is_active: boolean;
   user_name: string | null;
+  city: string;
+  region: string;
+  country: string;
 }
 
 export interface UsersResponse {

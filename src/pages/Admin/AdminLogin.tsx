@@ -5,10 +5,9 @@ import styled from 'styled-components';
 
 const LoginPage = styled.main`
   display: grid;
-  min-width: 900px;
   min-height: 100vh;
   place-items: center;
-  padding: 48px;
+  padding: 48px 0px;
   background: ${({ theme }) => theme.colors.adminRadialBackground};
   color: ${({ theme }) => theme.colors.text};
 `;
