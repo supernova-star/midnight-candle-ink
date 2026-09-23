@@ -36,7 +36,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ip,
       city: data.city ?? null,
       region: data.region ?? null,
-      country: data.country_name ?? null,
+      country: data.country ?? null,
     });
   } catch (error) {
     console.error('Visitor location error:', error);
