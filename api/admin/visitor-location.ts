@@ -24,7 +24,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    const response = await fetch(`https://ipapi.co/${ip}/json/`);
+    const response = await fetch(`https://ipwho.is/${ip}`);
 
     if (!response.ok) {
       throw new Error('Failed to fetch IP location');
