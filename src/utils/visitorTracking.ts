@@ -26,22 +26,40 @@ export const recordVisitorActivity = async (): Promise<string | null> => {
 
   const browserId = getBrowserId();
 
-  const { data, error } = await supabase.rpc('register_browser', {
-    p_browser_id: browserId,
-  });
+  try {
+    const locationResponse = await fetch('/api/admin/visitor-location');
 
-  if (error) {
-    console.error('Failed to register visitor:', error);
+    const location = locationResponse.ok
+      ? await locationResponse.json()
+      : {
+          city: null,
+          region: null,
+          country: null,
+        };
+
+    const { data, error } = await supabase.rpc('register_browser', {
+      p_browser_id: browserId,
+      p_city: location.city,
+      p_region: location.region,
+      p_country: location.country,
+    });
+
+    if (error) {
+      console.error('Failed to register visitor:', error);
+      return null;
+    }
+
+    const username = data ?? null;
+
+    if (username) {
+      localStorage.setItem(USERNAME_KEY, username);
+    }
+
+    return username;
+  } catch (error) {
+    console.error('Failed to record visitor activity:', error);
     return null;
   }
-
-  const username = data ?? null;
-
-  if (username) {
-    localStorage.setItem(USERNAME_KEY, username);
-  }
-
-  return username;
 };
 
 export const updateVisitorActivity = async (): Promise<void> => {
