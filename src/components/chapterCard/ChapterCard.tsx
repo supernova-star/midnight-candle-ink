@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import { CalendarDays, ChevronRight } from 'lucide-react';
 import type { ChapterMetadata } from '@/constants/stories';
 import { ColumnFlexContainer } from '@/components/uiComponents/container/Container';
 import { Typography } from '@/components/uiComponents/typography/Typography';
@@ -10,11 +10,13 @@ import {
   ChapterNumber,
 } from './ChapterCard.styles';
 import { useResponsive } from '@/hooks/useResponsive';
+import { MetadataItem } from '@/pages/StoryDetail/StoryDetail.styles';
 
 type ChapterCardProps = {
   chapter: ChapterMetadata;
   chapterNumber: number;
   storyId: string;
+  postDate: string;
   isAvailable?: boolean;
 };
 
@@ -22,6 +24,7 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
   chapter,
   chapterNumber,
   storyId,
+  postDate,
   isAvailable = true,
 }) => {
   const isMobile = useResponsive();
@@ -38,9 +41,18 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
         </Typography>
       </ColumnFlexContainer>
       <ChapterMeta>
-        <Typography variant="caption" color="var(--text-secondary)">
-          {isAvailable ? `${chapter.readTime} read` : 'Coming soon'}
-        </Typography>
+        <ColumnFlexContainer>
+          <Typography variant="caption" color="var(--text-secondary)">
+            {isAvailable ? `${chapter.readTime} read` : 'Coming soon'}
+          </Typography>
+          <MetadataItem>
+            <CalendarDays aria-hidden="true" />
+            <Typography variant="caption" color="var(--text-secondary)">
+              {postDate}
+            </Typography>
+          </MetadataItem>
+        </ColumnFlexContainer>
+
         {isAvailable && <ChevronRight aria-hidden="true" />}
       </ChapterMeta>
     </ChapterCardContainer>

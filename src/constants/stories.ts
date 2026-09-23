@@ -16,6 +16,7 @@ export type ChapterMetadata = {
   title: string;
   readTime: string;
   isAvailable: boolean;
+  postedDate: string;
   markdownUrl: string;
 };
 
@@ -34,6 +35,7 @@ export const stories: StoryMetadata[] = [
         title: 'The Camera',
         readTime: '3 min',
         isAvailable: true,
+        postedDate: 'Sep 19, 2026',
         markdownUrl: new URL('./the-photograph/the-camera.md', import.meta.url)
           .href,
       },
@@ -42,6 +44,7 @@ export const stories: StoryMetadata[] = [
         title: 'The Figure',
         readTime: '4 min',
         isAvailable: true,
+        postedDate: 'Sep 21, 2026',
         markdownUrl: new URL('./the-photograph/the-figure.md', import.meta.url)
           .href,
       },
@@ -49,7 +52,8 @@ export const stories: StoryMetadata[] = [
         id: 'chapter-3-3w8koa',
         title: 'Closer',
         readTime: '5 min',
-        isAvailable: false,
+        isAvailable: true,
+        postedDate: 'Sep 23, 2026',
         markdownUrl: new URL('./the-photograph/closer.md', import.meta.url)
           .href,
       },
@@ -58,6 +62,7 @@ export const stories: StoryMetadata[] = [
         title: 'Don’t Wake Her',
         readTime: '5 min',
         isAvailable: false,
+        postedDate: 'Sep 24, 2026',
         markdownUrl: new URL(
           './the-photograph/dont-wake-her.md',
           import.meta.url,

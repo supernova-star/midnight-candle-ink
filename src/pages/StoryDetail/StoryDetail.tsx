@@ -148,6 +148,7 @@ export const StoryDetail: React.FC = () => {
                 chapter={chapter}
                 chapterNumber={index + 1}
                 storyId={story.id}
+                postDate={chapter.postedDate}
                 isAvailable={chapter.isAvailable}
               />
             ))}
