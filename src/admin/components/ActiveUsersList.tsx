@@ -71,6 +71,30 @@ export const ActiveUsersList: React.FC = () => {
     }
   };
 
+  const formatRelativeTime = (date: string): string => {
+    const diff = Date.now() - new Date(date).getTime();
+
+    const minutes = Math.floor(diff / (1000 * 60));
+
+    if (minutes < 1) {
+      return 'Just now';
+    }
+
+    if (minutes < 60) {
+      return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+
+    if (hours < 24) {
+      return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+    }
+
+    const days = Math.floor(hours / 24);
+
+    return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+  };
+
   useEffect(() => {
     void loadUsers();
   }, []);
@@ -189,10 +213,11 @@ export const ActiveUsersList: React.FC = () => {
             }}
           >
             <colgroup>
-              <col style={{ width: '48%' }} />
-              <col style={{ width: '25%' }} />
-              <col style={{ width: '20%' }} />
-              <col style={{ width: '7%' }} />
+              <col style={{ width: '34%' }} />
+              <col style={{ width: '21%' }} />
+              <col style={{ width: '24%' }} />
+              <col style={{ width: '15%' }} />
+              <col style={{ width: '6%' }} />
             </colgroup>
 
             <thead
@@ -211,6 +236,8 @@ export const ActiveUsersList: React.FC = () => {
                 <th style={headerCellStyle}>VISITOR</th>
 
                 <th style={headerCellStyle}>CREATED AT</th>
+
+                <th style={headerCellStyle}>LAST SEEN AT</th>
 
                 <th style={headerCellStyle}>STATUS</th>
 
@@ -286,6 +313,28 @@ export const ActiveUsersList: React.FC = () => {
                         variant="body2"
                       >
                         {formatCreatedAt(user.created_at)}
+                      </Typography>
+                    </ColumnFlexContainer>
+                  </td>
+
+                  {/* Last Seen */}
+                  <td style={bodyCellStyle}>
+                    <ColumnFlexContainer gap={[0]}>
+                      <Typography
+                        color="var(--admin-text-secondary)"
+                        variant="body2"
+                      >
+                        {formatCreatedAt(user.last_seen_at)}
+                      </Typography>
+
+                      <Typography
+                        color="var(--admin-text-muted)"
+                        variant="caption"
+                        sx={{
+                          fontSize: 11,
+                        }}
+                      >
+                        {formatRelativeTime(user.last_seen_at)}
                       </Typography>
                     </ColumnFlexContainer>
                   </td>
