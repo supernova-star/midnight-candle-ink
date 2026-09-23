@@ -118,20 +118,28 @@ export const UserNameSection: FC<UserNameSectionProps> = ({ isMobile }) => {
         >
           <User size={24} color="var(--accent)" />
         </RowFlexContainer>
+        <ColumnFlexContainer>
+          <Typography
+            variant={isMobile ? 'subtitle2' : 'subtitle1'}
+            color="var(--text-primary)"
+            weight="semiBold"
+          >
+            UserName
+          </Typography>
 
-        <Typography
-          variant={isMobile ? 'subtitle2' : 'subtitle1'}
-          color="var(--text-primary)"
-          weight="semiBold"
-        >
-          UserName
-        </Typography>
+          <Typography
+            variant={isMobile ? 'caption' : 'caption'}
+            color="var(--text-secondary)"
+            weight="regular"
+          >
+            Make it more personal.
+          </Typography>
+        </ColumnFlexContainer>
       </RowFlexContainer>
 
       {!isEditing && (
         <RowFlexContainer
           alignItems="center"
-          justify-content="between"
           position="relative"
           width="100%"
           height="48px"
@@ -143,20 +151,26 @@ export const UserNameSection: FC<UserNameSectionProps> = ({ isMobile }) => {
             weight="semiBold"
             sx={{
               marginTop: '4px',
-              width: '100%',
+              flex: 1,
             }}
           >
             {username}
           </Typography>
 
           <RowFlexContainer
-            backgroundColor="var(--accent-selected)"
+            backgroundColor="var(--button-primary-bg)"
             padding={[2]}
             borderRadius={[1]}
             cursor="pointer"
             onClick={handleStartEditing}
+            gap={[1]}
           >
-            <PenLine size={12} />
+            <PenLine size={20} color="var(--button-primary-text)" />
+            {!isMobile && (
+              <Typography variant="body2" color="var(--button-primary-text)">
+                Edit name
+              </Typography>
+            )}
           </RowFlexContainer>
         </RowFlexContainer>
       )}

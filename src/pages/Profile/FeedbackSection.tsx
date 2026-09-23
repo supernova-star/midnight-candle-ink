@@ -46,7 +46,7 @@ export const FeedbackSection: FC<FeedbackSectionProps> = ({ isMobile }) => {
 
       setBanner({
         open: true,
-        message: 'Thank you for sharing your thoughts!',
+        message: 'Thank you for sharing your thoughts! It really means a lot!',
         severity: 'success',
       });
 
@@ -94,14 +94,23 @@ export const FeedbackSection: FC<FeedbackSectionProps> = ({ isMobile }) => {
         >
           <Quote size={24} color="var(--accent)" />
         </RowFlexContainer>
-        <Typography
-          variant={isMobile ? 'subtitle2' : 'subtitle1'}
-          color="var(--text-primary)"
-          weight="semiBold"
-          sx={{ marginTop: '4px' }}
-        >
-          Share your thoughts.
-        </Typography>
+        <ColumnFlexContainer>
+          <Typography
+            variant={isMobile ? 'subtitle2' : 'subtitle1'}
+            color="var(--text-primary)"
+            weight="semiBold"
+            sx={{ marginTop: '4px' }}
+          >
+            Share your thoughts.
+          </Typography>
+          <Typography
+            variant={isMobile ? 'caption' : 'caption'}
+            color="var(--text-secondary)"
+            weight="regular"
+          >
+            Your thoughts mean a lot!
+          </Typography>
+        </ColumnFlexContainer>
       </RowFlexContainer>
 
       <UserForm
@@ -111,8 +120,8 @@ export const FeedbackSection: FC<FeedbackSectionProps> = ({ isMobile }) => {
         }}
       >
         <textarea
-          placeholder="Share your thoughts here..."
-          rows={isMobile ? 10 : 4}
+          placeholder="Tell us what you liked, what could be better or any ideas you have..."
+          rows={isMobile ? 8 : 4}
           value={feedback}
           onChange={(event) => setFeedback(event.target.value)}
           disabled={isSubmitting}
