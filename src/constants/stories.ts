@@ -1,4 +1,7 @@
-import { PHOTOGRAPH_IMAGE_URL } from '@/constants/assets';
+import {
+  PHOTOGRAPH_IMAGE_URL,
+  THREE_SEVENTEEN_IMAGE_URL,
+} from '@/constants/assets';
 
 export type StoryMetadata = {
   id: string;
@@ -61,7 +64,7 @@ export const stories: StoryMetadata[] = [
         id: 'chapter-4-9x2j1b',
         title: 'Don’t Wake Her',
         readTime: '5 min',
-        isAvailable: false,
+        isAvailable: true,
         postedDate: 'Sep 24, 2026',
         markdownUrl: new URL(
           './the-photograph/dont-wake-her.md',
@@ -70,16 +73,16 @@ export const stories: StoryMetadata[] = [
       },
     ],
   },
-  //   {
-  //     id: 'the-last-room',
-  //     title: 'The Last Room',
-  //     genre: 'Mystery',
-  //     readTime: 6,
-  //     postedDay: 'September 16, 2026',
-  //     summary: 'Some doors are better left closed.',
-  //     image: '/photograph.png',
-  //     chapters: [],
-  //   },
+  // {
+  //   id: '3-17-am',
+  //   title: '3:17 AM',
+  //   genre: 'Mystery',
+  //   readTime: 6,
+  //   postedDay: 'September 16, 2026',
+  //   summary: 'Some doors are better left closed.',
+  //   image: THREE_SEVENTEEN_IMAGE_URL,
+  //   chapters: [],
+  // },
   //   {
   //     id: 'a-missed-train',
   //     title: 'A Missed Train',
