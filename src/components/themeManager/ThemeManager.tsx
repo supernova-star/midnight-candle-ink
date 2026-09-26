@@ -115,6 +115,8 @@ const getModeVariables = (mode: ColorMode) => {
     '--feedback-error-text': feedback.error.text,
     '--feedback-error-icon': feedback.error.icon,
 
+    '--story-opacity': mode === 'dark' ? '0.5' : '0.7',
+
     '--home-text-shadow':
       mode === 'dark'
         ? '0 2px 4px rgba(0, 0, 0, 0.72)'

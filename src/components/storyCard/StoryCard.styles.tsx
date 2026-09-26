@@ -15,7 +15,7 @@ export const CardLink = styled(Link)`
   }
   &[aria-disabled='true'] {
     cursor: not-allowed;
-    opacity: 0.7;
+    opacity: var(--story-opacity);
   }
 `;
 
