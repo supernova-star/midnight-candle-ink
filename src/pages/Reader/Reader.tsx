@@ -152,6 +152,19 @@ export const Reader: React.FC = () => {
           )}
         </ReadingBody>
       </ReaderContent>
+      <Typography
+        variant="caption"
+        color="var(--text-secondary)"
+        sx={{
+          display: 'block',
+          textAlign: 'center',
+          marginTop: theme.spacing(4),
+          padding: theme.spacing(0, 3, 3),
+          opacity: 0.7,
+        }}
+      >
+        © 2026 Midnight Candle & Ink. All rights reserved.
+      </Typography>
     </ColumnFlexContainer>
   );
 };

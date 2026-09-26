@@ -13,6 +13,10 @@ export const CardLink = styled(Link)`
     outline: ${({ theme }) => theme.spacing(0.5)} solid var(--accent);
     outline-offset: ${({ theme }) => theme.spacing(1)};
   }
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
 `;
 
 export const Card = styled(ColumnFlexContainer)`
@@ -29,7 +33,7 @@ export const Card = styled(ColumnFlexContainer)`
     border-color ${({ theme }) => theme.transitions.default},
     box-shadow ${({ theme }) => theme.transitions.default};
 
-  ${CardLink}:hover & {
+  ${CardLink}:hover:not([aria-disabled='true']) & {
     border-color: var(--accent);
     box-shadow: ${({ theme }) => theme.spacing(0, 2, 5)}
       color-mix(in srgb, var(--text-primary) 12%, transparent);
