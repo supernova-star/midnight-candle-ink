@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-import { ColumnFlexContainer } from '@/components/uiComponents/container/Container';
+import {
+  ColumnFlexContainer,
+  RowFlexContainer,
+} from '@/components/uiComponents/container/Container';
 
 export const ReaderContent = styled(ColumnFlexContainer)<{
   $isMobile: boolean;
@@ -11,7 +14,7 @@ export const ReaderContent = styled(ColumnFlexContainer)<{
   min-height: 0;
   flex: 1;
   margin: 0 auto;
-  padding: ${({ $isMobile, theme }) => theme.spacing(4, 0, $isMobile ? 4 : 8)};
+  padding: ${({ $isMobile, theme }) => theme.spacing(4, 0, $isMobile ? 4 : 4)};
   overflow: hidden;
 `;
 
@@ -22,7 +25,7 @@ export const ReadingBody = styled.article`
   flex: 1;
   margin: 0 auto;
   overflow-y: auto;
-  padding: ${({ theme }) => theme.spacing(1, 3, 8)};
+  padding: ${({ theme }) => theme.spacing(1, 3, 4)};
   color: var(--text-primary);
   scrollbar-color: var(--border) transparent;
   scrollbar-width: thin;
@@ -84,4 +87,20 @@ export const ReadingBody = styled.article`
     border-left: ${({ theme }) => theme.spacing(0.5)} solid var(--accent);
     color: var(--text-secondary);
   }
+`;
+
+export const ActionButton = styled(RowFlexContainer)<{ isDisabled: boolean }>`
+  border: ${({ isDisabled }) =>
+    isDisabled
+      ? '1px solid var(--button-disabled-bg)'
+      : '1px solid var(--button-primary-bg)'};
+  > div {
+    > svg,
+    > span,
+    > p {
+      color: ${({ isDisabled }) =>
+        isDisabled ? 'var(--button-disabled-bg)' : 'var(--button-primary-bg)'};
+    }
+  }
+  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
 `;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Lock } from 'lucide-react';
 import type { StoryMetadata } from '@/constants/stories';
 import { Typography } from '@/components/uiComponents/typography/Typography';
 import { ColumnFlexContainer } from '@/components/uiComponents/container/Container';
@@ -54,7 +54,11 @@ export const StoryCard: React.FC<StoryCardProps> = ({ story }) => {
           </Typography>
           <ReadLabel>
             {isPublished ? 'Read Story' : 'Coming Soon'}
-            {isPublished && <ArrowRight aria-hidden="true" />}
+            {isPublished ? (
+              <ArrowRight aria-hidden="true" />
+            ) : (
+              <Lock aria-hidden="true" />
+            )}
           </ReadLabel>
         </ColumnFlexContainer>
       </Card>

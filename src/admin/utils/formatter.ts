@@ -29,3 +29,13 @@ export const formatLastSeen = (lastSeenAt: string | null) => {
 
   return `${diffDays} days ago`;
 };
+
+export const isDateTodayOrBefore = (date: string) => {
+  const targetDate = new Date(date);
+  const today = new Date();
+
+  targetDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  return targetDate <= today;
+};

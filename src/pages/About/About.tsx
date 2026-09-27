@@ -71,6 +71,19 @@ export const About: React.FC = () => (
         <Instagram aria-hidden="true" />
         Instagram
       </InstagramLink>
+      <Typography
+        variant="caption"
+        color="var(--text-secondary)"
+        sx={{
+          display: 'block',
+          textAlign: 'center',
+          marginTop: theme.spacing(2),
+          padding: theme.spacing(0, 3, 3),
+          opacity: 0.7,
+        }}
+      >
+        © 2026 Midnight Candle & Ink. All rights reserved.
+      </Typography>
     </ColumnFlexContainer>
   </ColumnFlexContainer>
 );

@@ -10,6 +10,8 @@ import { stories } from '@/constants/stories';
 import { useResponsive } from '@/hooks/useResponsive';
 import { ReaderContent, ReadingBody } from './Reader.styles';
 import theme from '@/theme/theme';
+import { ActionButtonContainer } from './ActionButtonContainer';
+import { isDateTodayOrBefore } from '@/admin/utils/formatter';
 
 export const Reader: React.FC = () => {
   const navigate = useNavigate();
@@ -61,6 +63,49 @@ export const Reader: React.FC = () => {
   if (!story || !chapter || chapterIndex === undefined) {
     return <Navigate to="/not-found" replace />;
   }
+
+  const isFirstChapter = chapterIndex === 0;
+  const isLastChapter = chapterIndex === story.chapters.length - 1;
+
+  const previousChapter = !isFirstChapter
+    ? story.chapters[chapterIndex - 1]
+    : undefined;
+
+  const nextChapter = !isLastChapter
+    ? story.chapters[chapterIndex + 1]
+    : undefined;
+
+  const previousChapterName = previousChapter?.title ?? 'No previous chapter';
+
+  const nextChapterName = nextChapter?.title ?? 'No next chapter';
+
+  const isPreviousChapterPublished = previousChapter
+    ? isDateTodayOrBefore(previousChapter.postedDate)
+    : false;
+
+  const isNextChapterPublished = nextChapter
+    ? isDateTodayOrBefore(nextChapter.postedDate)
+    : false;
+
+  const isPreviousDisabled = isFirstChapter || !isPreviousChapterPublished;
+
+  const isNextDisabled = isLastChapter || !isNextChapterPublished;
+
+  const handlePrevious = () => {
+    if (isPreviousDisabled || !previousChapter) {
+      return;
+    }
+
+    navigate(`/stories/${story.id}/chapters/${previousChapter.id}`);
+  };
+
+  const handleNext = () => {
+    if (isNextDisabled || !nextChapter) {
+      return;
+    }
+
+    navigate(`/stories/${story.id}/chapters/${nextChapter.id}`);
+  };
 
   return (
     <ColumnFlexContainer
@@ -151,14 +196,23 @@ export const Reader: React.FC = () => {
             </Typography>
           )}
         </ReadingBody>
+        <ActionButtonContainer
+          isPreviousDisabled={isPreviousDisabled}
+          isNextDisabled={isNextDisabled}
+          previousChapterName={previousChapterName}
+          nextChapterName={nextChapterName}
+          onPreviousClick={handlePrevious}
+          onNextClick={handleNext}
+        />
       </ReaderContent>
+
       <Typography
         variant="caption"
         color="var(--text-secondary)"
         sx={{
           display: 'block',
           textAlign: 'center',
-          marginTop: theme.spacing(4),
+          marginTop: theme.spacing(2),
           padding: theme.spacing(0, 3, 3),
           opacity: 0.7,
         }}
