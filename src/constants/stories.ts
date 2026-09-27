@@ -136,59 +136,59 @@ export const stories: StoryMetadata[] = [
     summary: 'Some gifts are more than they seem.',
     image: THE_LAST_GIFT_IMAGE_URL,
     chapters: [
-      // {
-      //   id: 'chapter-1-56ag56',
-      //   title: 'The Brass Arm',
-      //   readTime: '3 min',
-      //   isAvailable: false,
-      //   postedDate: 'Sep 28, 2026',
-      //   markdownUrl: new URL(
-      //     './the-last-gift/the-brass-arm.md',
-      //     import.meta.url,
-      //   ).href,
-      // },
-      // {
-      //   id: 'chapter-2-xlp8np',
-      //   title: 'The Mahogany Block',
-      //   readTime: '3 min',
-      //   isAvailable: false,
-      //   postedDate: 'Sep 29, 2026',
-      //   markdownUrl: new URL(
-      //     './the-last-gift/the-mahogany-block.md',
-      //     import.meta.url,
-      //   ).href,
-      // },
-      // {
-      //   id: 'chapter-3-5tev8o',
-      //   title: 'The Coiled Spring',
-      //   readTime: '3 min',
-      //   isAvailable: false,
-      //   postedDate: 'Sep 30, 2026',
-      //   markdownUrl: new URL(
-      //     './the-last-gift/the-coiled-spring.md',
-      //     import.meta.url,
-      //   ).href,
-      // },
-      // {
-      //   id: 'chapter-4-wi3dt5',
-      //   title: 'The Bell, Key, and Screw',
-      //   readTime: '4 min',
-      //   isAvailable: false,
-      //   postedDate: 'Oct 1, 2026',
-      //   markdownUrl: new URL('./the-last-gift/the-bell.md', import.meta.url)
-      //     .href,
-      // },
-      // {
-      //   id: 'chapter-4-r5v8nd',
-      //   title: 'The final letter',
-      //   readTime: '4 min',
-      //   isAvailable: false,
-      //   postedDate: 'Oct 2, 2026',
-      //   markdownUrl: new URL(
-      //     './the-last-gift/the-final-letter.md',
-      //     import.meta.url,
-      //   ).href,
-      // },
+      {
+        id: 'chapter-1-56ag56',
+        title: 'The Brass Arm',
+        readTime: '3 min',
+        isAvailable: true,
+        postedDate: 'Sep 28, 2026',
+        markdownUrl: new URL(
+          './the-last-gift/the-brass-arm.md',
+          import.meta.url,
+        ).href,
+      },
+      {
+        id: 'chapter-2-xlp8np',
+        title: 'The Mahogany Block',
+        readTime: '3 min',
+        isAvailable: false,
+        postedDate: 'Sep 29, 2026',
+        markdownUrl: new URL(
+          './the-last-gift/the-mahogany-block.md',
+          import.meta.url,
+        ).href,
+      },
+      {
+        id: 'chapter-3-5tev8o',
+        title: 'The Coiled Spring',
+        readTime: '3 min',
+        isAvailable: false,
+        postedDate: 'Sep 30, 2026',
+        markdownUrl: new URL(
+          './the-last-gift/the-coiled-spring.md',
+          import.meta.url,
+        ).href,
+      },
+      {
+        id: 'chapter-4-wi3dt5',
+        title: 'The Bell, Key, and Screw',
+        readTime: '4 min',
+        isAvailable: false,
+        postedDate: 'Oct 1, 2026',
+        markdownUrl: new URL('./the-last-gift/the-bell.md', import.meta.url)
+          .href,
+      },
+      {
+        id: 'chapter-4-r5v8nd',
+        title: 'The final letter',
+        readTime: '4 min',
+        isAvailable: false,
+        postedDate: 'Oct 2, 2026',
+        markdownUrl: new URL(
+          './the-last-gift/the-final-letter.md',
+          import.meta.url,
+        ).href,
+      },
     ],
   },
   //   {

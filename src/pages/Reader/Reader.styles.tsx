@@ -84,7 +84,7 @@ export const ReadingBody = styled.article`
   blockquote {
     margin: ${({ theme }) => theme.spacing(6, 0)};
     padding-left: ${({ theme }) => theme.spacing(4)};
-    border-left: ${({ theme }) => theme.spacing(0.5)} solid var(--accent);
+    border-left: ${({ theme }) => theme.spacing(1)} solid var(--action-border);
     color: var(--text-secondary);
   }
 `;
