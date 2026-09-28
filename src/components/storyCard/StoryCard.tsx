@@ -1,13 +1,18 @@
-import React from 'react';
-import { ArrowRight, Lock } from 'lucide-react';
+import React, { FC } from 'react';
+import { ArrowRight, Lock, MessagesSquare } from 'lucide-react';
 import type { StoryMetadata } from '@/constants/stories';
 import { Typography } from '@/components/uiComponents/typography/Typography';
-import { ColumnFlexContainer } from '@/components/uiComponents/container/Container';
+import {
+  ColumnFlexContainer,
+  RowFlexContainer,
+} from '@/components/uiComponents/container/Container';
 import theme from '@/theme/theme';
 import { Card, CardLink, ReadLabel, StoryImage } from './StoryCard.styles';
+import { useResponsive } from '@/hooks/useResponsive';
 
 type StoryCardProps = {
   story: StoryMetadata;
+  sendModalDetails: (title: string) => void;
 };
 
 const isStoryPublished = (postedDay: string) => {
@@ -21,8 +26,9 @@ const isStoryPublished = (postedDay: string) => {
   return postedDate > today ? false : true;
 };
 
-export const StoryCard: React.FC<StoryCardProps> = ({ story }) => {
+export const StoryCard: FC<StoryCardProps> = ({ story, sendModalDetails }) => {
   const isPublished = isStoryPublished(story.postedDay);
+  const isMobile = useResponsive();
   return (
     <CardLink
       to={isPublished ? `/stories/${story.id}` : '#'}
@@ -61,6 +67,44 @@ export const StoryCard: React.FC<StoryCardProps> = ({ story }) => {
             )}
           </ReadLabel>
         </ColumnFlexContainer>
+        <RowFlexContainer
+          backgroundColor="#F4EBDD"
+          padding={[2, 3]}
+          gap={[2]}
+          position="absolute"
+          borderRadius={[10]}
+          top={isMobile ? '8px' : '50%'}
+          right={isMobile ? '8px' : '8px'}
+          width="fit-content"
+          cursor="pointer"
+          onClick={(event) => {
+            event.preventDefault();
+            sendModalDetails(story.title);
+          }}
+          sx={{
+            boxShadow: '0 2px 8px rgb(0 0 0 / 12%)',
+            transition:
+              'background-color 150ms ease, transform 150ms ease, box-shadow 150ms ease',
+
+            '&:hover': {
+              backgroundColor: 'white',
+              transform: 'translateY(-1px)',
+              boxShadow: '0 4px 12px rgb(0 0 0 / 16%)',
+            },
+          }}
+        >
+          <MessagesSquare size={isMobile ? 16 : 16} color="#222222" />
+          {!isMobile && (
+            <Typography
+              variant="legal"
+              weight="semiBold"
+              color="#222222"
+              sx={{ margin: 0 }}
+            >
+              Feedback
+            </Typography>
+          )}
+        </RowFlexContainer>
       </Card>
     </CardLink>
   );

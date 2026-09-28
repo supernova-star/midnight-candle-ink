@@ -32,13 +32,6 @@ export const StoryHeader = styled(RowFlexContainer)`
   }
 `;
 
-export const StoryIntroduction = styled(RowFlexContainer)`
-  min-width: 0;
-  flex: 1;
-  align-items: flex-start;
-  gap: ${({ theme }) => theme.spacing(5)};
-`;
-
 export const StoryMetadataContainer = styled(ColumnFlexContainer)`
   width: ${({ theme }) => theme.spacing(62)};
   flex-shrink: 0;
@@ -49,7 +42,7 @@ export const StoryMetadataContainer = styled(ColumnFlexContainer)`
     width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: ${({ theme }) => theme.spacing(3, 4)};
+    gap: ${({ theme }) => theme.spacing(1, 4)};
     padding: 0;
   }
 `;

@@ -6,10 +6,25 @@ import { Typography } from '@/components/uiComponents/typography/Typography';
 import { StoriesContent, StoryGrid } from './Stories.styles';
 import { ColumnFlexContainer } from '@/components/uiComponents/container/Container';
 import { useResponsive } from '@/hooks/useResponsive';
+import { FeedbackModal } from '@/components/feedbackModal/FeedbackModal';
+import { Banner } from '@/components/uiComponents/banner/Banner';
+import { useFeedback } from '@/hooks/useFeedback';
 
 export const Stories: React.FC = () => {
   const isMobile = useResponsive();
   const isTablet = useResponsive('tablet');
+
+  const {
+    isFeedbackModalOpen,
+    setIsFeedbackModalOpen,
+    title,
+    isSubmitting,
+    banner,
+    setBanner,
+    handleModalDetails,
+    handleSubmitFeedback,
+  } = useFeedback();
+
   return (
     <ColumnFlexContainer
       element="main"
@@ -19,6 +34,27 @@ export const Stories: React.FC = () => {
       backgroundColor="var(--background)"
       sx={{ color: 'var(--text-primary)' }}
     >
+      <Banner
+        open={banner.open}
+        message={banner.message}
+        severity={banner.severity}
+        onClose={() =>
+          setBanner((previous) => ({
+            ...previous,
+            open: false,
+          }))
+        }
+      />
+      <FeedbackModal
+        isOpen={isFeedbackModalOpen}
+        onClose={() => {
+          setIsFeedbackModalOpen(false);
+        }}
+        title={title}
+        titleType="STORY"
+        handleSubmit={handleSubmitFeedback}
+        isSubmitting={isSubmitting}
+      />
       <SiteNavigation />
       <StoriesContent>
         <ColumnFlexContainer
@@ -49,7 +85,11 @@ export const Stories: React.FC = () => {
         </ColumnFlexContainer>
         <StoryGrid>
           {stories.map((story) => (
-            <StoryCard key={story.id} story={story} />
+            <StoryCard
+              key={story.id}
+              story={story}
+              sendModalDetails={handleModalDetails}
+            />
           ))}
         </StoryGrid>
       </StoriesContent>

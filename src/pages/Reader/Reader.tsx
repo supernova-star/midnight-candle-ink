@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MessagesSquare } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/uiComponents/button/Button';
-import { ColumnFlexContainer } from '@/components/uiComponents/container/Container';
+import {
+  ColumnFlexContainer,
+  RowFlexContainer,
+} from '@/components/uiComponents/container/Container';
 import { SiteNavigation } from '@/components/siteNavigation/SiteNavigation';
 import { Typography } from '@/components/uiComponents/typography/Typography';
 import { stories } from '@/constants/stories';
@@ -12,6 +15,9 @@ import { ReaderContent, ReadingBody } from './Reader.styles';
 import theme from '@/theme/theme';
 import { ActionButtonContainer } from './ActionButtonContainer';
 import { isDateTodayOrBefore } from '@/admin/utils/formatter';
+import { useFeedback } from '@/hooks/useFeedback';
+import { Banner } from '@/components/uiComponents/banner/Banner';
+import { FeedbackModal } from '@/components/feedbackModal/FeedbackModal';
 
 export const Reader: React.FC = () => {
   const navigate = useNavigate();
@@ -59,6 +65,17 @@ export const Reader: React.FC = () => {
 
     return () => controller.abort();
   }, [chapter]);
+
+  const {
+    isFeedbackModalOpen,
+    setIsFeedbackModalOpen,
+    title,
+    isSubmitting,
+    banner,
+    setBanner,
+    handleModalDetails,
+    handleSubmitFeedback,
+  } = useFeedback();
 
   if (!story || !chapter || chapterIndex === undefined) {
     return <Navigate to="/not-found" replace />;
@@ -117,35 +134,84 @@ export const Reader: React.FC = () => {
       sx={{ color: 'var(--text-primary)' }}
     >
       <SiteNavigation />
+      <Banner
+        open={banner.open}
+        message={banner.message}
+        severity={banner.severity}
+        onClose={() =>
+          setBanner((previous) => ({
+            ...previous,
+            open: false,
+          }))
+        }
+      />
+      <FeedbackModal
+        isOpen={isFeedbackModalOpen}
+        onClose={() => {
+          setIsFeedbackModalOpen(false);
+        }}
+        title={title}
+        titleType="CHAPTER"
+        handleSubmit={handleSubmitFeedback}
+        isSubmitting={isSubmitting}
+      />
       <ReaderContent $isMobile={isMobile}>
-        <Button
-          text={`Back to ${story.title}`}
-          size="xSmall"
-          iconOptions={{
-            icon: ArrowLeft,
-            iconColor: 'var(--button-primary-text)',
-          }}
-          textOptions={{
-            textColor: 'var(--button-primary-text)',
-            textVariant: 'caption',
-            textWeight: 'semiBold',
-          }}
-          buttonStyles={{
-            bgColor: 'var(--button-primary-bg)',
-            borderRadius: [2],
-          }}
-          onClick={() => navigate(`/stories/${story.id}`)}
-          sx={{
-            alignSelf: 'flex-start',
-            '&:hover': { backgroundColor: 'var(--button-hover-bg)' },
-            '&:hover .MuiTypography-root': {
-              color: 'var(--button-hover-text)',
-            },
-            '&:hover .MuiButton-startIcon svg': {
-              color: 'var(--button-hover-text)',
-            },
-          }}
-        />
+        <RowFlexContainer justifyContent="between" alignItems="center">
+          <Button
+            text={`Back to ${story.title}`}
+            size="xSmall"
+            iconOptions={{
+              icon: ArrowLeft,
+              iconColor: 'var(--button-primary-text)',
+            }}
+            textOptions={{
+              textColor: 'var(--button-primary-text)',
+              textVariant: 'caption',
+              textWeight: 'semiBold',
+            }}
+            buttonStyles={{
+              bgColor: 'var(--button-primary-bg)',
+              borderRadius: [2],
+            }}
+            onClick={() => navigate(`/stories/${story.id}`)}
+            sx={{
+              alignSelf: 'flex-start',
+              '&:hover': { backgroundColor: 'var(--button-hover-bg)' },
+              '&:hover .MuiTypography-root': {
+                color: 'var(--button-hover-text)',
+              },
+              '&:hover .MuiButton-startIcon svg': {
+                color: 'var(--button-hover-text)',
+              },
+            }}
+          />
+          <Button
+            text="Give Feedback"
+            size="xSmall"
+            variant="outlined"
+            onClick={() => {
+              handleModalDetails(`${story.title} - ${chapter.title}`);
+            }}
+            iconOptions={{
+              icon: MessagesSquare,
+              iconColor: 'var(--button-primary-bg)',
+            }}
+            textOptions={{
+              textColor: 'var(--button-primary-bg)',
+              textVariant: 'caption',
+              textWeight: 'semiBold',
+            }}
+            buttonStyles={{
+              bgColor: 'var(--button-primary-bg)',
+              borderRadius: [2],
+            }}
+            sx={{
+              alignSelf: 'flex-start',
+              margin: '0 0 16px 0',
+              '&:hover': { backgroundColor: 'var(--background)' },
+            }}
+          />
+        </RowFlexContainer>
         <Typography
           component="h1"
           variant={isMobile ? 'body2' : 'h6'}

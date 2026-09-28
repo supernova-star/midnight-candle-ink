@@ -44,12 +44,6 @@ export const Card = styled(ColumnFlexContainer)`
     flex-direction: row;
     align-items: center;
     min-height: ${({ theme }) => theme.spacing(30)};
-
-    > div:last-child {
-      align-self: stretch;
-      justify-content: center;
-      padding: ${({ theme }) => theme.spacing(3, 10, 3, 2)};
-    }
   }
 `;
 

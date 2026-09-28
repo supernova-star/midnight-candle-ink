@@ -28,7 +28,7 @@ export const modePalettes: Record<ColorMode, ModePalette> = {
     button: '#E9DFD2',
     accent: '#A87570',
 
-    buttonPrimaryBG: '#9A5967',
+    buttonPrimaryBG: '#c06d7f',
     buttonPrimaryText: '#FFF7ED',
     buttonDisabledBG: '#403A3A',
     buttonDisabledText: '#777070',

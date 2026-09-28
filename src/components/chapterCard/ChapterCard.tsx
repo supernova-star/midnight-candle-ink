@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalendarDays, ChevronRight } from 'lucide-react';
+import { CalendarDays, ChevronRight, Lock } from 'lucide-react';
 import type { ChapterMetadata } from '@/constants/stories';
 import { ColumnFlexContainer } from '@/components/uiComponents/container/Container';
 import { Typography } from '@/components/uiComponents/typography/Typography';
@@ -53,7 +53,11 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
           </MetadataItem>
         </ColumnFlexContainer>
 
-        {isAvailable && <ChevronRight aria-hidden="true" />}
+        {isAvailable ? (
+          <ChevronRight aria-hidden="true" />
+        ) : (
+          <Lock aria-hidden="true" />
+        )}
       </ChapterMeta>
     </ChapterCardContainer>
   );
