@@ -131,7 +131,7 @@ export const stories: StoryMetadata[] = [
     id: 'the-last-gift-1c2d6g',
     title: 'The Last Gift',
     genre: 'Emotional',
-    readTime: 17,
+    readTime: 12,
     postedDay: 'September 28, 2026',
     summary: 'Some gifts are more than they seem.',
     image: THE_LAST_GIFT_IMAGE_URL,
@@ -139,7 +139,7 @@ export const stories: StoryMetadata[] = [
       {
         id: 'chapter-1-56ag56',
         title: 'The Brass Arm',
-        readTime: '3 min',
+        readTime: '2 min',
         isAvailable: true,
         postedDate: 'Sep 28, 2026',
         markdownUrl: new URL(
@@ -150,8 +150,8 @@ export const stories: StoryMetadata[] = [
       {
         id: 'chapter-2-xlp8np',
         title: 'The Mahogany Block',
-        readTime: '3 min',
-        isAvailable: false,
+        readTime: '2 min',
+        isAvailable: true,
         postedDate: 'Sep 29, 2026',
         markdownUrl: new URL(
           './the-last-gift/the-mahogany-block.md',
@@ -161,7 +161,7 @@ export const stories: StoryMetadata[] = [
       {
         id: 'chapter-3-5tev8o',
         title: 'The Coiled Spring',
-        readTime: '3 min',
+        readTime: '2 min',
         isAvailable: false,
         postedDate: 'Sep 30, 2026',
         markdownUrl: new URL(
@@ -172,7 +172,7 @@ export const stories: StoryMetadata[] = [
       {
         id: 'chapter-4-wi3dt5',
         title: 'The Bell, Key, and Screw',
-        readTime: '4 min',
+        readTime: '3 min',
         isAvailable: false,
         postedDate: 'Oct 1, 2026',
         markdownUrl: new URL('./the-last-gift/the-bell.md', import.meta.url)
@@ -180,8 +180,8 @@ export const stories: StoryMetadata[] = [
       },
       {
         id: 'chapter-4-r5v8nd',
-        title: 'The final letter',
-        readTime: '4 min',
+        title: 'The Final letter',
+        readTime: '3 min',
         isAvailable: false,
         postedDate: 'Oct 2, 2026',
         markdownUrl: new URL(
@@ -198,16 +198,6 @@ export const stories: StoryMetadata[] = [
   //     readTime: 5,
   //     postedDay: 'September 12, 2026',
   //     summary: 'Some goodbyes never really end.',
-  //     image: '/photograph.png',
-  //     chapters: [],
-  //   },
-  //   {
-  //     id: 'letters-to-kolkata',
-  //     title: 'Letters to Kolkata',
-  //     genre: 'Slice of Life',
-  //     readTime: 7,
-  //     postedDay: 'September 8, 2026',
-  //     summary: 'A city, a time, and a few unspoken words.',
   //     image: '/photograph.png',
   //     chapters: [],
   //   },

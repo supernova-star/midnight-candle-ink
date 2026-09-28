@@ -29,6 +29,7 @@ import { Banner, BannerItem } from '@/components/uiComponents/banner/Banner';
 import { FeedbackModal } from '@/components/feedbackModal/FeedbackModal';
 import { submitFeedback } from '@/utils/visitorTracking';
 import { useFeedback } from '@/hooks/useFeedback';
+import { isDateTodayOrBefore } from '@/admin/utils/formatter';
 
 type StoreMetaDataComponentProps = {
   story: StoryMetadata;
@@ -262,7 +263,9 @@ export const StoryDetail: React.FC = () => {
                 chapterNumber={index + 1}
                 storyId={story.id}
                 postDate={chapter.postedDate}
-                isAvailable={chapter.isAvailable}
+                isAvailable={
+                  chapter.isAvailable && isDateTodayOrBefore(chapter.postedDate)
+                }
               />
             ))}
           </ChaptersList>
