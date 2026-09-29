@@ -162,7 +162,7 @@ export const stories: StoryMetadata[] = [
         id: 'chapter-3-5tev8o',
         title: 'The Coiled Spring',
         readTime: '2 min',
-        isAvailable: false,
+        isAvailable: true,
         postedDate: 'Sep 30, 2026',
         markdownUrl: new URL(
           './the-last-gift/the-coiled-spring.md',

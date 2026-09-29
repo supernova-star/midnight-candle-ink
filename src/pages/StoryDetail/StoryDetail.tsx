@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ArrowLeft,
   BookOpen,
@@ -25,9 +25,8 @@ import {
   StoryMetadataContainer,
 } from './StoryDetail.styles';
 import { useResponsive } from '@/hooks/useResponsive';
-import { Banner, BannerItem } from '@/components/uiComponents/banner/Banner';
+import { Banner } from '@/components/uiComponents/banner/Banner';
 import { FeedbackModal } from '@/components/feedbackModal/FeedbackModal';
-import { submitFeedback } from '@/utils/visitorTracking';
 import { useFeedback } from '@/hooks/useFeedback';
 import { isDateTodayOrBefore } from '@/admin/utils/formatter';
 
