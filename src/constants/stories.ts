@@ -173,7 +173,7 @@ export const stories: StoryMetadata[] = [
         id: 'chapter-4-wi3dt5',
         title: 'The Bell, Key, and Screw',
         readTime: '3 min',
-        isAvailable: false,
+        isAvailable: true,
         postedDate: 'Oct 1, 2026',
         markdownUrl: new URL('./the-last-gift/the-bell.md', import.meta.url)
           .href,
