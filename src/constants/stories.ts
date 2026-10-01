@@ -182,7 +182,7 @@ export const stories: StoryMetadata[] = [
         id: 'chapter-4-r5v8nd',
         title: 'The Final letter',
         readTime: '3 min',
-        isAvailable: false,
+        isAvailable: true,
         postedDate: 'Oct 2, 2026',
         markdownUrl: new URL(
           './the-last-gift/the-final-letter.md',
