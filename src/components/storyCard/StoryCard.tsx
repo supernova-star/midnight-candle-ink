@@ -26,6 +26,12 @@ const isStoryPublished = (postedDay: string) => {
   return postedDate > today ? false : true;
 };
 
+const formatShortDate = (date: string): string =>
+  new Intl.DateTimeFormat(undefined, {
+    month: 'short',
+    day: 'numeric',
+  }).format(new Date(date));
+
 export const StoryCard: FC<StoryCardProps> = ({ story, sendModalDetails }) => {
   const isPublished = isStoryPublished(story.postedDay);
   const isMobile = useResponsive();
@@ -58,8 +64,19 @@ export const StoryCard: FC<StoryCardProps> = ({ story, sendModalDetails }) => {
           >
             {story.genre} · {story.readTime} min read
           </Typography>
+          {isMobile && !isPublished && (
+            <Typography
+              variant="caption"
+              color="var(--text-secondary)"
+              sx={{ marginTop: theme.spacing(2) }}
+            >
+              Coming Soon - {formatShortDate(story.postedDay)}
+            </Typography>
+          )}
           <ReadLabel>
-            {isPublished ? 'Read Story' : 'Coming Soon'}
+            {isPublished
+              ? 'Read Story'
+              : `Coming Soon - ${formatShortDate(story.postedDay)}`}
             {isPublished ? (
               <ArrowRight aria-hidden="true" />
             ) : (
@@ -67,44 +84,46 @@ export const StoryCard: FC<StoryCardProps> = ({ story, sendModalDetails }) => {
             )}
           </ReadLabel>
         </ColumnFlexContainer>
-        <RowFlexContainer
-          backgroundColor="#F4EBDD"
-          padding={[2, 3]}
-          gap={[2]}
-          position="absolute"
-          borderRadius={[10]}
-          top={isMobile ? '8px' : '50%'}
-          right={isMobile ? '8px' : '8px'}
-          width="fit-content"
-          cursor="pointer"
-          onClick={(event) => {
-            event.preventDefault();
-            sendModalDetails(story.title);
-          }}
-          sx={{
-            boxShadow: '0 2px 8px rgb(0 0 0 / 12%)',
-            transition:
-              'background-color 150ms ease, transform 150ms ease, box-shadow 150ms ease',
+        {isPublished && (
+          <RowFlexContainer
+            backgroundColor="#F4EBDD"
+            padding={[2, 3]}
+            gap={[2]}
+            position="absolute"
+            borderRadius={[10]}
+            top={isMobile ? '8px' : '50%'}
+            right={isMobile ? '8px' : '8px'}
+            width="fit-content"
+            cursor="pointer"
+            onClick={(event) => {
+              event.preventDefault();
+              sendModalDetails(story.title);
+            }}
+            sx={{
+              boxShadow: '0 2px 8px rgb(0 0 0 / 12%)',
+              transition:
+                'background-color 150ms ease, transform 150ms ease, box-shadow 150ms ease',
 
-            '&:hover': {
-              backgroundColor: 'white',
-              transform: 'translateY(-1px)',
-              boxShadow: '0 4px 12px rgb(0 0 0 / 16%)',
-            },
-          }}
-        >
-          <MessagesSquare size={isMobile ? 16 : 16} color="#222222" />
-          {!isMobile && (
-            <Typography
-              variant="legal"
-              weight="semiBold"
-              color="#222222"
-              sx={{ margin: 0 }}
-            >
-              Feedback
-            </Typography>
-          )}
-        </RowFlexContainer>
+              '&:hover': {
+                backgroundColor: 'white',
+                transform: 'translateY(-1px)',
+                boxShadow: '0 4px 12px rgb(0 0 0 / 16%)',
+              },
+            }}
+          >
+            <MessagesSquare size={isMobile ? 16 : 16} color="#222222" />
+            {!isMobile && (
+              <Typography
+                variant="legal"
+                weight="semiBold"
+                color="#222222"
+                sx={{ margin: 0 }}
+              >
+                Feedback
+              </Typography>
+            )}
+          </RowFlexContainer>
+        )}
       </Card>
     </CardLink>
   );
