@@ -1,4 +1,7 @@
-import { Button as MuiButton, type ButtonProps as MuiButtonProps } from '@mui/material';
+import {
+  Button as MuiButton,
+  type ButtonProps as MuiButtonProps,
+} from '@mui/material';
 import { alpha, darken } from '@mui/material/styles';
 import type { LucideIcon } from 'lucide-react';
 import React, { forwardRef } from 'react';
@@ -13,7 +16,8 @@ import { getSpacing } from '@/theme/spacing';
 import theme from '@/theme/theme';
 import type { Colors, Spacing } from '@/theme/themeTypes';
 
-export type ButtonSize = 'xSmall' | 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge';
+export type ButtonSize =
+  'xSmall' | 'small' | 'medium' | 'large' | 'xLarge' | 'xxLarge';
 export type ButtonVariant = 'contained' | 'text' | 'outlined';
 export type LucideIcons = LucideIcon;
 
@@ -59,7 +63,10 @@ const buttonSizeMap: Record<ButtonSize, MuiButtonProps['size']> = {
   xxLarge: 'large',
 };
 
-const buttonSizeStylesMap: Record<ButtonSize, { px: number; py: number; minHeight: number }> = {
+const buttonSizeStylesMap: Record<
+  ButtonSize,
+  { px: number; py: number; minHeight: number }
+> = {
   xSmall: { px: 2, py: 0.75, minHeight: 36 },
   small: { px: 2.5, py: 1, minHeight: 40 },
   medium: { px: 3.5, py: 1.25, minHeight: 48 },
@@ -70,12 +77,18 @@ const buttonSizeStylesMap: Record<ButtonSize, { px: number; py: number; minHeigh
 
 const resolveWidth = (
   width: ButtonStylesOptions['width'] = 'hugContents',
-  spacingFn: typeof theme.spacing
+  spacingFn: typeof theme.spacing,
 ): string | number => {
   if (width === 'fullWidth') return '100%';
   if (width === 'hugContents') return 'fit-content';
 
   return getSpacing(width, spacingFn);
+};
+
+const resolveColor = (color: Colors | string): string => {
+  const paletteColor = colorPalette[color as Colors];
+
+  return typeof paletteColor === 'string' ? paletteColor : color;
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -92,17 +105,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       sx,
       ...props
     },
-    ref
+    ref,
   ) => {
-    const iconColor = iconOptions?.iconColor ?? 'white';
+    const iconColor = resolveColor(iconOptions?.iconColor ?? 'white');
     const iconPosition = iconOptions?.iconPosition ?? 'start';
-    const textColor = textOptions?.textColor ?? (variant === 'contained' ? 'white' : 'text');
+    const textColor = resolveColor(
+      textOptions?.textColor ?? (variant === 'contained' ? 'white' : 'text'),
+    );
     const textStyle = textOptions?.textStyle ?? 'regular';
     const textWeight = textOptions?.textWeight ?? 'semiBold';
     const textVariant = textOptions?.textVariant ?? 'button';
 
     const bgColor = buttonStyles?.bgColor ?? 'primary';
-    const baseColor = colorPalette[bgColor as Colors] ?? (bgColor as string);
+    const baseColor = resolveColor(bgColor);
     const isCssVar = baseColor.startsWith('var(');
     const isPrimary = bgColor === 'primary';
     const containedHoverColor = isCssVar
@@ -116,12 +131,63 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ? darken(baseColor, 0.2)
         : darken(baseColor, 0.14);
     const sizeStyles = buttonSizeStylesMap[size];
+    const disabledTextColor = textColor.startsWith('var(')
+      ? textColor
+      : alpha(textColor, 0.72);
+    const buttonSx: MuiButtonProps['sx'] = [
+      {
+        borderRadius: buttonStyles?.borderRadius
+          ? getSpacing(buttonStyles.borderRadius, theme.spacing)
+          : 0,
+        width: fullWidth
+          ? '100%'
+          : resolveWidth(buttonStyles?.width ?? 'hugContents', theme.spacing),
+        ...(fullWidth && { flex: '1 1 0', minWidth: 0 }),
+        ...(buttonStyles?.margin && {
+          margin: getSpacing(buttonStyles.margin, theme.spacing),
+        }),
+        minHeight: sizeStyles.minHeight,
+        px: sizeStyles.px,
+        py: sizeStyles.py,
+        backgroundColor: variant === 'contained' ? baseColor : 'transparent',
+        color: textColor,
+        borderColor: variant === 'outlined' ? baseColor : undefined,
+        transition:
+          'transform 140ms ease, background-color 140ms ease, box-shadow 180ms ease',
+        '&:hover': {
+          backgroundColor:
+            variant === 'contained'
+              ? containedHoverColor
+              : isCssVar
+                ? baseColor
+                : alpha(baseColor, isPrimary ? 0.16 : 0.12),
+          borderColor: variant === 'outlined' ? containedHoverColor : undefined,
+        },
+        '&:active': {
+          transform: 'translateY(1px) scale(0.99)',
+          backgroundColor:
+            variant === 'contained'
+              ? containedActiveColor
+              : isCssVar
+                ? baseColor
+                : alpha(baseColor, isPrimary ? 0.24 : 0.18),
+        },
+        '&.Mui-focusVisible': {
+          boxShadow: `0 0 0 3px ${isCssVar ? baseColor : alpha(baseColor, 0.26)}`,
+        },
+        '&.Mui-disabled': {
+          backgroundColor: colorPalette.border,
+          color: disabledTextColor,
+        },
+      },
+      ...(sx ? (Array.isArray(sx) ? sx : [sx]) : []),
+    ];
 
     const IconComponent = iconOptions?.icon;
     const iconNode = IconComponent ? (
       <IconComponent
         size={buttonSizeStylesMap[size].minHeight > 48 ? 18 : 16}
-        color={colorPalette[iconColor as Colors] ?? (iconColor as string)}
+        color={iconColor}
         style={{ display: 'block' }}
       />
     ) : undefined;
@@ -136,52 +202,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         endIcon={iconPosition === 'end' ? iconNode : undefined}
         disabled={disabled}
         fullWidth={fullWidth}
-        sx={{
-          borderRadius: buttonStyles?.borderRadius
-            ? getSpacing(buttonStyles.borderRadius, theme.spacing)
-            : 0,
-          width: fullWidth
-            ? '100%'
-            : resolveWidth(buttonStyles?.width ?? 'hugContents', theme.spacing),
-          ...(fullWidth && { flex: '1 1 0', minWidth: 0 }),
-          ...(buttonStyles?.margin && { margin: getSpacing(buttonStyles.margin, theme.spacing) }),
-          minHeight: sizeStyles.minHeight,
-          px: sizeStyles.px,
-          py: sizeStyles.py,
-          backgroundColor: variant === 'contained' ? baseColor : 'transparent',
-          color: colorPalette[textColor as Colors] ?? textColor,
-          borderColor: variant === 'outlined' ? baseColor : undefined,
-          transition: 'transform 140ms ease, background-color 140ms ease, box-shadow 180ms ease',
-          '&:hover': {
-            backgroundColor:
-              variant === 'contained'
-                ? containedHoverColor
-                : isCssVar
-                  ? baseColor
-                  : alpha(baseColor, isPrimary ? 0.16 : 0.12),
-            borderColor: variant === 'outlined' ? containedHoverColor : undefined,
-          },
-          '&:active': {
-            transform: 'translateY(1px) scale(0.99)',
-            backgroundColor:
-              variant === 'contained'
-                ? containedActiveColor
-                : isCssVar
-                  ? baseColor
-                  : alpha(baseColor, isPrimary ? 0.24 : 0.18),
-          },
-          '&.Mui-focusVisible': {
-            boxShadow: `0 0 0 3px ${isCssVar ? baseColor : alpha(baseColor, 0.26)}`,
-          },
-          '&.Mui-disabled': {
-            backgroundColor: colorPalette.border,
-            color: (() => {
-              const c = colorPalette[textColor as Colors] ?? textColor;
-              return c.startsWith('var(') ? c : alpha(c, 0.72);
-            })(),
-          },
-          ...sx,
-        }}
+        sx={buttonSx}
         {...props}
       >
         <Typography
@@ -195,5 +216,5 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         </Typography>
       </MuiButton>
     );
-  }
+  },
 );

@@ -5,7 +5,6 @@ import {
   FormControl,
   type SelectChangeEvent,
 } from '@mui/material';
-import { colorPalette } from '@/theme/colors';
 import type { Spacing } from '@/theme/themeTypes';
 import { getSpacing } from '@/theme/spacing';
 import theme from '@/theme/theme';
@@ -29,6 +28,16 @@ export interface DropdownTextOptions {
   textVariant?: TypographyVariant;
 }
 
+export interface DropdownColorOptions {
+  surface?: string;
+  text?: string;
+  border?: string;
+  accent?: string;
+  disabledText?: string;
+  hover?: string;
+  selected?: string;
+}
+
 export interface DropdownProps {
   options: DropdownOption[];
   value: string;
@@ -40,6 +49,8 @@ export interface DropdownProps {
   textOptions?: DropdownTextOptions;
   hasBorder?: boolean;
   padding?: Spacing;
+  ariaLabel?: string;
+  colors?: DropdownColorOptions;
 }
 
 export const Dropdown: React.FC<DropdownProps> = ({
@@ -53,12 +64,23 @@ export const Dropdown: React.FC<DropdownProps> = ({
   textOptions,
   hasBorder = true,
   padding,
+  ariaLabel,
+  colors,
 }) => {
   const textColor = textOptions?.textColor ?? 'surface';
   const textWeight = textOptions?.textWeight ?? 'regular';
   const textVariant = textOptions?.textVariant ?? 'body2';
   const textStyle = textOptions?.textStyle ?? 'regular';
   const radius = getSpacing(borderRadius, theme.spacing);
+  const surfaceColor = colors?.surface ?? 'var(--surface)';
+  const controlTextColor = colors?.text ?? 'var(--text-primary)';
+  const borderColor = colors?.border ?? 'var(--border)';
+  const accentColor = colors?.accent ?? 'var(--accent)';
+  const disabledTextColor = colors?.disabledText ?? 'var(--text-disabled)';
+  const hoverColor =
+    colors?.hover ?? 'color-mix(in srgb, var(--accent) 10%, transparent)';
+  const selectedColor =
+    colors?.selected ?? 'color-mix(in srgb, var(--accent) 18%, transparent)';
 
   const handleChange = (e: SelectChangeEvent) => onChange(e.target.value);
 
@@ -67,36 +89,37 @@ export const Dropdown: React.FC<DropdownProps> = ({
       <Select
         value={value}
         onChange={handleChange}
+        inputProps={{ 'aria-label': ariaLabel }}
         sx={{
           borderRadius: radius,
-          color: 'var(--text-primary)',
-          backgroundColor: 'var(--surface)',
+          color: controlTextColor,
+          backgroundColor: surfaceColor,
           ...(padding && {
             '& .MuiSelect-select': {
               padding: getSpacing(padding, theme.spacing),
             },
           }),
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: hasBorder ? 'var(--border)' : 'transparent',
+            borderColor: hasBorder ? borderColor : 'transparent',
             borderRadius: radius,
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: hasBorder ? 'var(--accent)' : 'transparent',
+            borderColor: hasBorder ? accentColor : 'transparent',
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: hasBorder ? 'var(--accent)' : 'transparent',
+            borderColor: hasBorder ? accentColor : 'transparent',
           },
           '& .MuiSelect-icon': {
-            color: 'var(--accent)',
+            color: accentColor,
           },
           '&.Mui-disabled': {
             opacity: 0.5,
             '& .MuiSelect-select': {
-              WebkitTextFillColor: 'var(--text-disabled)',
+              WebkitTextFillColor: disabledTextColor,
             },
-            '& .MuiSelect-icon': { color: 'var(--text-disabled)' },
+            '& .MuiSelect-icon': { color: disabledTextColor },
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: colorPalette.border,
+              borderColor,
             },
           },
         }}
@@ -104,18 +127,16 @@ export const Dropdown: React.FC<DropdownProps> = ({
           slotProps: {
             paper: {
               sx: {
-                backgroundColor: 'var(--surface)',
+                backgroundColor: surfaceColor,
                 borderRadius: radius,
-                border: hasBorder ? `1px solid var(--border)` : 'none',
+                border: hasBorder ? `1px solid ${borderColor}` : 'none',
                 '& .MuiMenuItem-root': {
-                  color: 'var(--text-primary)',
+                  color: controlTextColor,
                   '&:hover': {
-                    backgroundColor:
-                      'color-mix(in srgb, var(--accent) 10%, transparent)',
+                    backgroundColor: hoverColor,
                   },
                   '&.Mui-selected': {
-                    backgroundColor:
-                      'color-mix(in srgb, var(--accent) 18%, transparent)',
+                    backgroundColor: `${selectedColor} !important`,
                   },
                 },
               },

@@ -19,6 +19,8 @@ import { UserDetailsModal } from './UserDetailsModal';
 const hasOpenedAfterJoining = (user: User): boolean =>
   new Date(user.last_seen_at).getTime() > new Date(user.created_at).getTime();
 
+const VISITORS_PER_PAGE = 20;
+
 export const ActiveUsersList: React.FC = () => {
   const [userData, setUserData] = useState<UsersResponse>({
     users: [],
@@ -41,9 +43,25 @@ export const ActiveUsersList: React.FC = () => {
 
   const [visitorFilter, setVisitorFilter] = useState<VisitorFilter>('all');
 
+  const [selectedCountry, setSelectedCountry] = useState('');
+
+  const [currentPage, setCurrentPage] = useState(1);
+
   const [errorMessage, setErrorMessage] = useState('');
 
-  const filteredUsers = userData.users.filter((user) => {
+  const countries = Array.from(
+    new Set(
+      userData.users
+        .map((user) => user.country?.trim())
+        .filter((country): country is string => Boolean(country)),
+    ),
+  ).sort((first, second) => first.localeCompare(second));
+
+  const countryUsers = selectedCountry
+    ? userData.users.filter((user) => user.country?.trim() === selectedCountry)
+    : userData.users;
+
+  const filteredUsers = countryUsers.filter((user) => {
     if (visitorFilter === 'active') {
       return user.is_active;
     }
@@ -60,14 +78,35 @@ export const ActiveUsersList: React.FC = () => {
     filter: VisitorFilter;
     count: number;
   }[] = [
-    { label: 'All', filter: 'all', count: userData.totalUsers },
-    { label: 'Active now', filter: 'active', count: userData.activeUsers },
+    { label: 'All', filter: 'all', count: countryUsers.length },
+    {
+      label: 'Active now',
+      filter: 'active',
+      count: countryUsers.filter((user) => user.is_active).length,
+    },
     {
       label: 'Opened after joining',
       filter: 'returned',
-      count: userData.users.filter(hasOpenedAfterJoining).length,
+      count: countryUsers.filter(hasOpenedAfterJoining).length,
     },
   ];
+
+  const pageCount = Math.ceil(filteredUsers.length / VISITORS_PER_PAGE);
+  const safeCurrentPage = Math.min(currentPage, Math.max(pageCount, 1));
+  const paginatedUsers = filteredUsers.slice(
+    (safeCurrentPage - 1) * VISITORS_PER_PAGE,
+    safeCurrentPage * VISITORS_PER_PAGE,
+  );
+
+  const handleFilterChange = (filter: VisitorFilter): void => {
+    setVisitorFilter(filter);
+    setCurrentPage(1);
+  };
+
+  const handleCountryChange = (country: string): void => {
+    setSelectedCountry(country);
+    setCurrentPage(1);
+  };
 
   const loadUsers = async (): Promise<void> => {
     setIsRefreshing(true);
@@ -105,6 +144,20 @@ export const ActiveUsersList: React.FC = () => {
   useEffect(() => {
     void loadUsers();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage((page) => Math.min(page, Math.max(pageCount, 1)));
+  }, [pageCount]);
+
+  useEffect(() => {
+    if (
+      selectedCountry &&
+      !userData.users.some((user) => user.country?.trim() === selectedCountry)
+    ) {
+      setSelectedCountry('');
+      setCurrentPage(1);
+    }
+  }, [selectedCountry, userData.users]);
 
   return (
     <ColumnFlexContainer
@@ -171,7 +224,10 @@ export const ActiveUsersList: React.FC = () => {
       <VisitorFilters
         options={filterOptions}
         selectedFilter={visitorFilter}
-        onChange={setVisitorFilter}
+        onChange={handleFilterChange}
+        countries={countries}
+        selectedCountry={selectedCountry}
+        onCountryChange={handleCountryChange}
       />
 
       {errorMessage && (
@@ -181,10 +237,14 @@ export const ActiveUsersList: React.FC = () => {
       )}
 
       <VisitorsTable
-        users={filteredUsers}
+        users={paginatedUsers}
         hasAnyUsers={userData.users.length > 0}
         isLoading={isLoading}
         deletingBrowserId={deletingBrowserId}
+        totalCount={filteredUsers.length}
+        currentPage={safeCurrentPage}
+        pageSize={VISITORS_PER_PAGE}
+        onPageChange={setCurrentPage}
         onSelectUser={setSelectedUser}
         onRequestDelete={setUserPendingDeletion}
       />

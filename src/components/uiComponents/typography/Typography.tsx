@@ -21,7 +21,8 @@ export type TypographyVariant =
   | 'button';
 
 export type FontWeight = 'light' | 'regular' | 'semiBold' | 'bold';
-export type TextStyle = 'regular' | 'italic' | 'underline' | 'strikethrough' | 'uppercase';
+export type TextStyle =
+  'regular' | 'italic' | 'underline' | 'strikethrough' | 'uppercase';
 export type TextAlign = 'left' | 'right' | 'center';
 
 const fontWeightMap: Record<FontWeight, number> = {
@@ -37,6 +38,12 @@ const textStyleMap: Record<TextStyle, React.CSSProperties> = {
   underline: { textDecoration: 'underline' },
   strikethrough: { textDecoration: 'line-through' },
   uppercase: { textTransform: 'uppercase' },
+};
+
+const resolveColor = (color: Colors | string): string => {
+  const paletteColor = colorPalette[color as Colors];
+
+  return typeof paletteColor === 'string' ? paletteColor : color;
 };
 
 export interface TypographyProps extends Omit<MuiTypographyProps, 'variant'> {
@@ -60,31 +67,36 @@ export const Typography = forwardRef<HTMLElement, TypographyProps>(
       sx = {},
       ...props
     },
-    ref
+    ref,
   ) => {
-    const textColor = colorPalette[color as keyof typeof colorPalette] ?? color;
+    const textColor = resolveColor(color);
     const muiVariant =
-      variant === 'legal' ? 'caption' : (variant as Exclude<TypographyVariant, 'legal'>);
+      variant === 'legal'
+        ? 'caption'
+        : (variant as Exclude<TypographyVariant, 'legal'>);
     const fontWeightValue = fontWeightMap[weight];
     const styleProps = textStyleMap[textStyle];
+    const typographySx: MuiTypographyProps['sx'] = [
+      {
+        fontFamily: 'inherit',
+        color: textColor,
+        fontWeight: fontWeightValue,
+        textAlign,
+        ...(variant === 'legal' && { fontSize: '10px' }),
+        ...styleProps,
+      },
+      ...(sx ? (Array.isArray(sx) ? sx : [sx]) : []),
+    ];
 
     return (
       <MuiTypography
         ref={ref}
         variant={muiVariant}
-        sx={{
-          fontFamily: 'inherit',
-          color: textColor,
-          fontWeight: fontWeightValue,
-          textAlign,
-          ...(variant === 'legal' && { fontSize: '10px' }),
-          ...styleProps,
-          ...sx,
-        }}
+        sx={typographySx}
         {...props}
       >
         {children}
       </MuiTypography>
     );
-  }
+  },
 );
