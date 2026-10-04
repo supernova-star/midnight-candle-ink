@@ -141,7 +141,7 @@ export const stories: StoryMetadata[] = [
   {
     id: '3-17-am-6q8m2r',
     title: '3:17 AM',
-    genre: 'Mystery',
+    genre: 'Supernatural',
     readTime: 18,
     postedDay: 'October 4, 2026',
     summary: 'One passenger. One ride. One unfinished night.',
@@ -151,7 +151,7 @@ export const stories: StoryMetadata[] = [
         id: 'chapter-1-3v7k1x',
         title: 'The Last Shift',
         readTime: '5 min',
-        isAvailable: false,
+        isAvailable: true,
         postedDate: 'Oct 04, 2026',
         markdownUrl: new URL(
           './three-seventeen/the-last-shift.md',
