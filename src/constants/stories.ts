@@ -162,7 +162,7 @@ export const stories: StoryMetadata[] = [
         id: 'chapter-2-2p6r1t',
         title: 'The Passenger',
         readTime: '4 min',
-        isAvailable: false,
+        isAvailable: true,
         postedDate: 'Oct 06, 2026',
         markdownUrl: new URL(
           './three-seventeen/the-passenger.md',
