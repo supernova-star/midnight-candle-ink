@@ -173,7 +173,7 @@ export const stories: StoryMetadata[] = [
         id: 'chapter-3-8v3n5c',
         title: 'The Unpaid Fare',
         readTime: '4 min',
-        isAvailable: false,
+        isAvailable: true,
         postedDate: 'Oct 08, 2026',
         markdownUrl: new URL(
           './three-seventeen/the-unpaid-fare.md',
