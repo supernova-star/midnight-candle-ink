@@ -184,7 +184,7 @@ export const stories: StoryMetadata[] = [
         id: 'chapter-4-7h1z9w',
         title: 'The Return',
         readTime: '5 min',
-        isAvailable: false,
+        isAvailable: true,
         postedDate: 'Oct 10, 2026',
         markdownUrl: new URL('./three-seventeen/the-return.md', import.meta.url)
           .href,
