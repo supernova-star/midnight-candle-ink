@@ -1,5 +1,6 @@
 import {
   PHOTOGRAPH_IMAGE_URL,
+  THE_JOURNEY_HOME_IMAGE_URL,
   THE_LAST_GIFT_IMAGE_URL,
   THREE_SEVENTEEN_IMAGE_URL,
 } from '@/constants/assets';
@@ -188,6 +189,59 @@ export const stories: StoryMetadata[] = [
         postedDate: 'Oct 10, 2026',
         markdownUrl: new URL('./three-seventeen/the-return.md', import.meta.url)
           .href,
+      },
+    ],
+  },
+  {
+    id: 'the-journey-home-ty00ky',
+    title: 'The Journey Home',
+    genre: 'Emotional',
+    readTime: 9,
+    postedDay: 'October 18, 2026',
+    summary: 'Some names carry you through a lifetime.',
+    image: THE_JOURNEY_HOME_IMAGE_URL,
+    chapters: [
+      {
+        id: 'chapter-1-uqj5r9',
+        title: 'Monai',
+        readTime: '2 min',
+        isAvailable: true,
+        postedDate: 'Oct 18, 2026',
+        markdownUrl: new URL('./the-journey-home/monai.md', import.meta.url)
+          .href,
+      },
+      {
+        id: 'chapter-2-qu0875',
+        title: 'The Dark Before Dawn',
+        readTime: '3 min',
+        isAvailable: true,
+        postedDate: 'Oct 18, 2026',
+        markdownUrl: new URL(
+          './the-journey-home/the-dark-before-dawn.md',
+          import.meta.url,
+        ).href,
+      },
+      {
+        id: 'chapter-3-xibqo6',
+        title: 'The Golden Light',
+        readTime: '2 min',
+        isAvailable: true,
+        postedDate: 'Oct 18, 2026',
+        markdownUrl: new URL(
+          './the-journey-home/the-golden-light.md',
+          import.meta.url,
+        ).href,
+      },
+      {
+        id: 'chapter-4-1hhxkn',
+        title: 'The Quiet Room',
+        readTime: '2 min',
+        isAvailable: true,
+        postedDate: 'Oct 18, 2026',
+        markdownUrl: new URL(
+          './the-journey-home/the-quiet-room.md',
+          import.meta.url,
+        ).href,
       },
     ],
   },
